@@ -75,4 +75,49 @@
 
     <script>
         const appData = {
-            
+            students: [
+                { name: 'عمار عايض', parent: 'عايض ال وقيتان', alert: 'إزعاج سلوكي', health: 'سليم', transport: 'منتظم' },
+                { name: 'سارة محمد', parent: 'محمد', alert: 'غياب متكرر', health: 'عذر طبي', transport: 'غائب السائق' },
+                { name: 'أحمد علي', parent: 'علي', alert: 'تدني الرياضيات', health: 'سليم', transport: 'منتظم' },
+                { name: 'جوري علي', parent: 'علي', alert: 'تفوق حاسب', health: 'سليم', transport: 'منتظم' },
+                { name: 'راكان ساعد', parent: 'ساعد', alert: 'تشتت لغتي', health: 'سليم', transport: 'منتظم' },
+                { name: 'ود ساعد', parent: 'ساعد', alert: 'تأخر صباحي', health: 'سليم', transport: 'منتظم' }
+            ],
+            teachers: [
+                { name: 'موضي ال فايز', sub: 'شريعة', rate: 96 },
+                { name: 'هدى', sub: 'حاسب', rate: 92 },
+                { name: 'العنود', sub: 'إنجليزي', rate: 89 },
+                { name: 'فادية', sub: 'اجتماعيات', rate: 91 },
+                { name: 'صالحة', sub: 'لغتي', rate: 84 },
+                { name: 'حصة', sub: 'علوم', rate: 87 }
+            ]
+        };
+
+        function handleLogin() {
+            const user = document.getElementById('username').value;
+            if (!user) return;
+            document.getElementById('login-page').style.display = 'none';
+            document.getElementById('main-system').style.display = 'flex';
+            renderUI(user);
+        }
+
+        function renderUI(user) {
+            const header = document.getElementById('user-header');
+            const main = document.getElementById('content-area');
+
+            if (user === 'هيا') {
+                header.innerHTML = <strong>هيا الغامدي</strong><br><small>المديرة</small>;
+                main.innerHTML = <div class="section"><h2>أداء المعلمات</h2><table><tr><th>المعلمة</th><th>المادة</th><th>التقييم</th></tr> + 
+                    appData.teachers.map(t => <tr><td>${t.name}</td><td>${t.sub}</td><td>${t.rate}%</td></tr>`).join('') + `</table></div>;
+            } else if (user === 'عايض') {
+                header.innerHTML = <strong>عايض ال وقيتان</strong><br><small>ولي أمر</small>;
+                main.innerHTML = <div class="section"><h2>متابعة عمار</h2><p>تنبيه السلوك: <span class="badge bg-red">إزعاج سلوكي</span></p></div>;
+            } else {
+                header.innerHTML = <strong>${user}</strong>;
+                main.innerHTML = <div class="section"><h2>قائمة الطلاب والحالات</h2><table><tr><th>الطالب</th><th>التنبيه</th><th>النقل</th></tr> + 
+                    appData.students.map(s => <tr><td>${s.name}</td><td><span class="badge bg-red">${s.alert}</span></td><td>${s.transport}</td></tr>`).join('') + `</table></div>;
+            }
+        }
+    </script>
+</body>
+</html>
