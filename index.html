@@ -3,108 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة بصيرة | تسجيل الدخول</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>منصة بصيرة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        :root { --primary: #4f46e5; --text: #1e293b; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Noto Sans Arabic', sans-serif; }
-        body { background-color: #ffffff; height: 100vh; display: flex; flex-direction: column; }
+        body { background-color: #ffffff; }
 
-        /* شاشة الدخول */
+        /* شاشة الدخول البيضاء */
         #login-page { 
-            position: fixed; inset: 0; background: #fff; 
-            display: flex; align-items: center; justify-content: center; z-index: 9999; 
+            position: fixed; inset: 0; background: #ffffff; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 100; 
         }
-        .login-container { width: 100%; max-width: 400px; padding: 20px; text-align: center; }
-        .logo-img { width: 220px; height: auto; margin-bottom: 20px; }
+        .logo { width: 250px; margin-bottom: 20px; }
+        .login-box { width: 320px; text-align: center; }
         input { 
-            width: 100%; padding: 16px; margin-bottom: 12px; border-radius: 12px; 
-            border: 1.5px solid #e2e8f0; background: #f8fafc; text-align: center; font-size: 16px; 
+            width: 100%; padding: 15px; margin-bottom: 10px; border-radius: 10px; 
+            border: 1px solid #ddd; text-align: center; font-size: 16px; background: #f9f9f9;
         }
-        .login-btn { 
-            width: 100%; padding: 16px; border-radius: 12px; border: none; 
-            background: var(--primary); color: white; font-size: 18px; font-weight: 700; cursor: pointer; 
+        .btn { 
+            width: 100%; padding: 15px; border-radius: 10px; border: none; 
+            background: #4f46e5; color: white; font-size: 18px; font-weight: bold; cursor: pointer; 
         }
 
-        /* واجهة النظام بعد الدخول */
-        #main-system { display: none; padding: 20px; background: #f1f5f9; min-height: 100vh; width: 100%; }
-        .card { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); margin-top: 20px; }
-        .header { display: flex; justify-content: space-between; align-items: center; background: white; padding: 15px 25px; border-radius: 15px; }
-        
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th, td { text-align: right; padding: 12px; border-bottom: 1px solid #f1f5f9; }
-        .badge { padding: 4px 10px; border-radius: 8px; font-size: 12px; background: #fee2e2; color: #ef4444; }
+        /* واجهة النظام (مخفية في البداية) */
+        #main-system { display: none; padding: 20px; background: #f0f2f5; min-height: 100vh; }
+        .header { background: white; padding: 20px; border-radius: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .content { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { text-align: right; padding: 12px; border-bottom: 1px solid #eee; }
     </style>
 </head>
 <body>
 
     <div id="login-page">
-        <div class="login-container">
-            <img src="logo.png.PNG" alt="بصيرة" class="logo-img">
-            <h1 style="font-size: 24px; margin-bottom: 10px;">تسجيل الدخول</h1>
-            <p style="color: #64748b; margin-bottom: 25px;">أدخل اسمك (وزارة، هيا، عمار، صالحة) لتجربة النظام</p>
-            
-            <input type="text" id="userField" placeholder="اسم المستخدم">
+        <img src="logo.png.PNG" class="logo" alt="بصيرة">
+        <div class="login-box">
+            <h2 style="margin-bottom: 20px;">تسجيل الدخول</h2>
+            <input type="text" id="userInput" placeholder="اسم المستخدم (وزارة أو هيا)">
             <input type="password" placeholder="كلمة المرور">
-            <button class="login-btn" onclick="startSystem()">دخول للنظام</button>
+            <button class="btn" onclick="login()">دخول</button>
         </div>
     </div>
 
     <div id="main-system">
         <div class="header">
-            <div>
-                <h2 id="userTitle">مرحباً بك</h2>
-                <p id="userRole" style="font-size: 13px; color: #64748b;"></p>
-            </div>
-            <button onclick="location.reload()" style="background: #ef4444; color: white; border: none; padding: 8px 15px; border-radius: 10px; cursor: pointer;">خروج</button>
+            <h2 id="welcomeText">مرحباً</h2>
+            <button onclick="location.reload()" style="background:#ff4d4d; color:white; border:none; padding:8px 15px; border-radius:8px; cursor:pointer;">خروج</button>
         </div>
-
-        <div id="content-area"></div>
+        <div id="mainContent" class="content">
+            </div>
     </div>
 
     <script>
-        function startSystem() {
-            const user = document.getElementById('userField').value.trim();
-            if (!user) return alert('فضلاً أدخل اسم المستخدم');
+        function login() {
+            var user = document.getElementById('userInput').value;
+            if(user === "") {
+                alert("الرجاء إدخال اسم المستخدم");
+                return;
+            }
 
+            // إخفاء صفحة الدخول وإظهار النظام فوراً
             document.getElementById('login-page').style.display = 'none';
             document.getElementById('main-system').style.display = 'block';
             
-            const area = document.getElementById('content-area');
-            const title = document.getElementById('userTitle');
-            const role = document.getElementById('userRole');
+            var welcome = document.getElementById('welcomeText');
+            var content = document.getElementById('mainContent');
 
-            if (user === 'وزارة') {
-                title.innerText = "وزارة التعليم - مركز التحليلات";
-                role.innerText = "صلاحية كاملة (مشرف نظام)";
-                area.
-                    innerHTML = <div class="card"><h3>مؤشر الأداء الدراسي العام</h3><canvas id="myChart" style="max-height:300px;"></canvas></div>;
-                renderChart();
-            } else if (user === 'هيا') {
-                title.innerText = "الأستاذة هيا الغامدي";
-                role.innerText = "مديرة المدرسة";
-                area.innerHTML = <div class="card"><h3>تقييم المعلمات</h3><table><tr><th>المعلمة</th><th>المادة</th><th>التقييم</th></tr><tr><td>موضي</td><td>شريعة</td><td>96%</td></tr><tr><td>صالحة</td><td>لغتي</td><td>82% (تذكرة اعتراض)</td></tr></table></div>;
-            } else if (user === 'عايض') {
-                title.innerText = "ولي الأمر: عايض ال وقيتان";
-                role.innerText = "متابعة الطالب: عمار";
-                area.innerHTML = <div class="card"><h3>حالة الطالب عمار</h3><p>السلوك: <span class="badge">إزعاج سلوكي</span></p><p>النقاط: 88/100</p></div>;
+            if(user === "وزارة") {
+                welcome.innerText = "لوحة تحكم الوزارة";
+                content.innerHTML = "<h3>تحليل أداء المدارس</h3><canvas id='chart' style='max-height:300px;'></canvas>";
+                var ctx = document.getElementById('chart').getContext('2d');
+                new Chart(ctx, { type: 'bar', data: { labels: ['حاسب', 'علوم', 'رياضيات'], datasets: [{label: 'النسبة', data: [95, 80, 70], backgroundColor: '#4f46e5'}] } });
+            } else if(user === "هيا") {
+                welcome.innerText = "مرحباً أ. هيا (المديرة)";
+                content.innerHTML = "<h3>تقييم المعلمات</h3><table><tr><th>المعلمة</th><th>التقييم</th></tr><tr><td>موضي</td><td>96%</td></tr><tr><td>صالحة</td><td>82%</td></tr></table>";
             } else {
-                title.innerText = "مرحباً: " + user;
-                area.innerHTML = <div class="card"><h3>لوحة المعلومات العامة</h3><p>أهلاً بك في نظام بصيرة المدرسي.</p></div>;
-            }
-        }
-
-        function renderChart() {
-            const ctx = document.getElementById('myChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['الرياضيات', 'العلوم', 'الحاسب', 'لغتي'],
-                    datasets: [{ label: 'نسبة الإنجاز', data: [85, 90, 98, 75], backgroundColor: '#4f46e5' }]
-                }
-            });
-        }
-    </script>
-</body>
-</html>
