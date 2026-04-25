@@ -66,4 +66,51 @@
         const appData = {
             students: [
                 { name: 'عمار عايض', parent: 'عايض ال وقيتان', alert: 'إزعاج سلوكي', points: 88, health: 'سليم', transport: 'منتظم' },
-              
+              { name: 'سارة محمد', parent: 'محمد', alert: 'غياب متكرر', points: 65, health: 'عذر طبي', transport: 'غائب السائق' },
+                { name: 'أحمد علي', parent: 'علي', alert: 'تدني الرياضيات', points: 45, health: 'سليم', transport: 'منتظم' },
+                { name: 'جوري علي', parent: 'علي', alert: 'تحتاج تحفيز حاسب', points: 98, health: 'سليم', transport: 'منتظم' },
+                { name: 'راكان ساعد', parent: 'ساعد', alert: 'تشتت لغتي', points: 72, health: 'سليم', transport: 'منتظم' },
+                { name: 'ود ساعد', parent: 'ساعد', alert: 'تأخر صباحي', points: 80, health: 'سليم', transport: 'منتظم' }
+            ],
+            teachers: [
+                { name: 'موضي ال فايز', sub: 'الشريعة الإسلامية', rate: 96 },
+                { name: 'هدى', sub: 'الحاسب', rate: 92 },
+                { name: 'العنود', sub: 'اللغة الإنجليزية', rate: 89 },
+                { name: 'فادية', sub: 'الاجتماعيات', rate: 91 },
+                { name: 'صالحة', sub: 'لغتي', rate: 84 },
+                { name: 'حصة', sub: 'العلوم', rate: 87 }
+            ]
+        };
+
+        function handleLogin() {
+            const user = document.getElementById('username').value;
+            if (!user) return alert('يرجى إدخال اسم المستخدم');
+            document.getElementById('login-page').style.display = 'none';
+            document.getElementById('main-system').style.display = 'flex';
+            renderUI(user);
+        }
+
+        function renderUI(user) {
+            const header = document.getElementById('user-header');
+            const main = document.getElementById('content-area');
+
+            if (user === 'هيا') {
+                header.innerHTML = <strong>هيا الغامدي</strong><br><small>مديرة المدرسة</small>;
+                main.innerHTML = <div class="section"><h2>تقييم المعلمات</h2><table><tr><th>المعلمة</th><th>المادة</th><th>التقييم</th></tr> + 
+                    appData.teachers.map(t => <tr><td>${t.name}</td><td>${t.sub}</td><td>${t.rate}%</td></tr>`).join('') + `</table></div>;
+            } else if (user === 'عايض') {
+                header.innerHTML = <strong>عايض ال وقيتان</strong><br><small>ولي أمر عمار</small>;
+                main.innerHTML = <div class="section"><h2>متابعة الطالب: عمار</h2><p>النقاط: 88/100</p><p>الحالة: <span class="badge bg-red">إزعاج سلوكي</span></p></div>;
+            } else if (user === 'وزارة') {
+                header.innerHTML = <strong>وزارة التعليم</strong><br><small>الإشراف</small>;
+                main.innerHTML = <div class="section"><h2>تحليل الأداء المدرسي</h2><canvas id="vChart"></canvas></div>;
+                setTimeout(() => { new Chart(document.getElementById('vChart'), { type: 'bar', data: { labels: ['حاسب', 'شريعة', 'علوم', 'لغتي'], datasets: [{ label: 'مستوى التحصيل', data: [95, 98, 85, 80], backgroundColor: '#6366F1' }] } }); }, 100);
+            } else {
+                header.innerHTML = <strong>${user}</strong>;
+                main.innerHTML = <div class="section"><h2>قائمة الطلاب (بصيرة)</h2><table><tr><th>الطالب</th><th>التنبيه</th><th>النقل</th></tr> + 
+                    appData.students.map(s => <tr><td>${s.name}</td><td>${s.alert}</td><td>${s.transport}</td></tr>`).join('') + `</table></div>;
+            }
+        }
+    </script>
+</body>
+</html>
