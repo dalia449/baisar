@@ -138,3 +138,111 @@
             background: #fff;
             padding: 6px;
             border-radius: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .input-box input { flex: 1; border: none; padding: 12px; outline: none; font-family: inherit; }
+
+        .btn-send { background: var(--primary); color: white; border: none; padding: 0 24px; border-radius: 12px; cursor: pointer; font-weight: 600; }
+
+        /* Performance Alerts */
+        .alerts-section {
+            background: var(--card);
+            border-radius: 28px;
+            padding: 28px;
+            border: 1px solid var(--border);
+        }
+
+        .student-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            background: #FAFAFA;
+            border-radius: 18px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .avatar {
+            width: 44px;
+            height: 44px;
+            background: var(--primary-soft);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            font-weight: 700;
+        }
+
+        .tag {
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-right: auto;
+        }
+
+        .tag.red { background: #FFF1F2; color: var(--danger); }
+        .tag.orange { background: #FFFBEB; color: var(--warning); }
+
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo-box">
+            <img src="logo.png" alt="Basira" onerror="this.src='https://cdn-icons-png.flaticon.com/512/2103/2103633.png'">
+            <span style="font-size: 22px; font-weight: 800; color: var(--primary)">Basira</span>
+        </div>
+        <a href="#" class="nav-link active">🏠 الرئيسية</a>
+        <a href="#" class="nav-link">👨‍🎓 الطلاب</a>
+        <a href="#" class="nav-link">🎫 تذاكر أولياء الأمور</a>
+        <a href="#" class="nav-link">📊 التقارير</a>
+    </nav>
+
+    <main>
+        <header>
+            <div>
+                <h1 style="font-size: 26px;">لوحة متابعة الأداء الذكية</h1>
+                <p style="color: var(--text-sub); font-size: 14px;">مرحباً داليا، إليك ملخص حالة الفصل اليوم.</p>
+            </div>
+        </header>
+
+        <section class="stats">
+            <div class="card">
+                <h3>إجمالي تذاكر اليوم</h3>
+                <p>24</p>
+            </div>
+            <div class="card">
+                <h3>تنبيهات سلوكية</h3>
+                <p style="color: var(--danger)">3</p>
+            </div>
+            <div class="card">
+                <h3>تنبيهات أكاديمية</h3>
+                <p style="color: var(--warning)">8</p>
+            </div>
+        </section>
+
+        <div class="grid">
+            <section class="ticket-section">
+                <h2 style="margin-bottom: 15px; font-size: 17px;">🎫 تذكرة لولي الأمر: عايض ال وقيتان</h2>
+                <div class="chat-area" id="chat">
+                    <div class="bubble ai">مرحباً بالسيد عايض ال وقيتان. تم فتح هذه التذكرة آلياً لمناقشة تحديثات الطالب عمار. كيف يمكننا مساعدتك؟</div>
+                    <div class="bubble user">وصلني إشعار بخصوص سلوك عمار في الصف، هل يمكنني معرفة التفاصيل؟</div>
+                    <div class="bubble ai">نعم يا سيد عايض، رصد نظام "بصيرة" تكرار إزعاج بالصف اليوم. نوصي بمراجعة خطة الانضباط الذكية المقترحة.</div>
+                </div>
+                <div class="input-box">
+                    <input type="text" id="chat-input" placeholder="اكتب رسالتك لولي الأمر...">
+                    <button class="btn-send" onclick="sendMsg()">إرسال</button>
+                </div>
+            </section>
+
+            <section class="alerts-section">
+                <h2 style="margin-bottom: 20px; font-size: 17px;">🚨 تنبيهات الأداء والسلوك</h2>
+                
+                <div class="student-card">
+                    <div class="avatar">عع</div>
+                    <div>
+                        <p style="font-weight: 700; font-size: 14px;">عمار عايض</p>
