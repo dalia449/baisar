@@ -3,103 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة بصيرة</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;700;800&display=swap" rel="stylesheet">
+    <title>منصة بصيرة الذكية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Noto Sans Arabic', sans-serif; }
-        body { background-color: #ffffff; color: #1e293b; }
-
-        /* شاشة الدخول - بيضاء ونظيفة */
-        #login-screen { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: #ffffff; display: flex; flex-direction: column; 
-            align-items: center; justify-content: center; z-index: 1000; 
-        }
+        body { background-color: #ffffff; overflow-x: hidden; }
         
-        .login-card { width: 90%; max-width: 380px; text-align: center; }
+        /* شاشة الدخول */
+        #app { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .login-card { width: 90%; max-width: 400px; text-align: center; padding: 20px; }
+        .logo { width: 280px; margin-bottom: 25px; }
+        h1 { font-size: 32px; color: #1e293b; margin-bottom: 10px; }
+        .input-field { width: 100%; padding: 16px; margin-bottom: 15px; border-radius: 12px; border: 2px solid #e2e8f0; text-align: center; font-size: 18px; outline: none; background: #f8fafc; }
+        .btn-login { width: 100%; padding: 16px; border-radius: 12px; border: none; background: #6366f1; color: white; font-size: 20px; font-weight: bold; cursor: pointer; }
         
-        .logo { width: 260px; height: auto; margin-bottom: 20px; }
-        
-        h1 { font-size: 28px; font-weight: 800; margin-bottom: 10px; color: #1e293b; }
-        p { color: #64748b; margin-bottom: 30px; }
-
-        .input-box { width: 100%; padding: 16px; margin-bottom: 15px; border-radius: 12px; border: 2px solid #e2e8f0; background: #f8fafc; text-align: center; font-size: 16px; outline: none; }
-        .input-box:focus { border-color: #6366f1; background: #fff; }
-
-        .enter-btn { width: 100%; padding: 16px; border-radius: 12px; border: none; background: #6366f1; color: white; font-size: 18px; font-weight: 700; cursor: pointer; transition: 0.2s; }
-        .enter-btn:hover { background: #4f46e5; }
-
-        /* واجهة النظام - مخفية تماماً */
-        #app-content { display: none; padding: 20px; min-height: 100vh; background: #f1f5f9; }
-        .header-bar { background: white; padding: 20px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 20px; }
-        .info-card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        /* واجهة النظام بعد الدخول */
+        .dashboard { width: 100%; padding: 20px; background: #f1f5f9; min-height: 100vh; }
+        .nav-bar { background: white; padding: 20px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .content-card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
     </style>
 </head>
 <body>
 
-    <div id="login-screen">
+    <div id="app">
         <div class="login-card">
             <img src="logo.png.PNG" class="logo" alt="بصيرة">
-            
             <h1>تسجيل الدخول</h1>
-            <p>نظام بصيرة للإدارة المدرسية الذكية</p>
+            <p style="color: #64748b; margin-bottom: 30px;">نظام بصيرة للإدارة المدرسية</p>
             
-            <input type="text" id="user-input" class="input-box" placeholder="اسم المستخدم (هيا أو وزارة)">
-            <input type="password" class="input-box" placeholder="كلمة المرور">
+            <input type="text" id="user-name" class="input-field" placeholder="اسم المستخدم (وزارة أو هيا)">
+            <input type="password" class="input-field" placeholder="كلمة المرور">
             
-            <button class="enter-btn" onclick="executeLogin()">دخول للنظام</button>
+            <button class="btn-login" onclick="handleLogin()">دخول للنظام</button>
         </div>
-    </div>
-
-    <div id="app-content">
-        <div class="header-bar">
-            <h2 id="display-name">مرحباً بك</h2>
-            <button onclick="location.reload()" style="background:#ef4444; color:white; border:none; padding:8px 15px; border-radius:8px; cursor:pointer; font-weight:bold;">خروج</button>
-        </div>
-
-        <div class="info-card" id="main-view">
-            </div>
     </div>
 
     <script>
-        function executeLogin() {
-            const userValue = document.getElementById('user-input').value.trim();
+        function handleLogin() {
+            const user = document.getElementById('user-name').value.trim();
             
-            if (userValue === "") {
-                alert("لطفاً أدخل اسم المستخدم");
+            if (user === "") {
+                alert("يرجى كتابة اسم المستخدم أولاً");
                 return;
             }
 
-            // تنفيذ عملية الدخول الحقيقية
-            document.getElementById('login-screen').style.setProperty('display', 'none', 'important');
-            document.getElementById('app-content').style.display = 'block';
-            
-            const view = document.getElementById('main-view');
-            const nameDisplay = document.getElementById('display-name');
+            // مسح شاشة الدخول وبناء النظام فوراً
+            const app = document.getElementById('app');
+            app.innerHTML = `
+                <div class="dashboard">
+                    <div class="nav-bar">
+                        <h2>مرحباً بك: ${user}</h2>
+                        <button onclick="location.reload()" style="background:#ef4444; color:white; border:none; padding:10px 20px; border-radius:10px; cursor:pointer; font-weight:bold;">خروج</button>
+                    </div>
+                    <div class="content-card" id="main-content">
+                        ${renderContent(user)}
+                    </div>
+                </div>
+            `;
 
-            if (userValue === "وزارة") {
-                nameDisplay.innerText = "لوحة تحكم الوزارة";
-                view.innerHTML = "<h3>إحصائيات الأداء العام</h3><canvas id='myChart' style='margin-top:20px; max-height:300px;'></canvas>";
-                
-                // رسم البياني
-                const ctx = document.getElementById('myChart').
-                    getContext('2d');
-                new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: ['حاسب', 'علوم', 'لغتي', 'رياضيات'],
-                        datasets: [{ label: 'نسبة النجاح', data: [98, 85, 80, 75], backgroundColor: '#6366f1' }]
-                    }
-                });
-            } else if (userValue === "هيا") {
-                nameDisplay.innerText = "أهلاً أ. هيا الغامدي";
-                view.innerHTML = "<h3>إدارة المعلمات</h3><p style='margin-top:10px;'>لديكِ 2 اعتراضات قيد الانتظار من المعلمة صالحة.</p>";
-            } else {
-                nameDisplay.innerText = "مرحباً: " + userValue;
-                view.innerHTML = "<h3>لوحة المعلومات</h3><p>تم الدخول بنجاح إلى ملفك الشخصي في نظام بصيرة.</p>";
+            if (user === "وزارة") {
+                createChart();
             }
         }
-    </script>
-</body>
-</html>
+
+        function renderContent(user) {
+            if (user === "وزارة") {
+                return `<h3>إحصائيات الإنجاز التعليمي - العام الحالي</h3>
+                        <canvas id="myChart" style="margin-top:20px; max-height:350px;"></canvas>`;
+            } else if (user === "هيا") {
+                return `<h3>لوحة التحكم للمديرة</h3>
+                        <p style="margin-top:20px; font-size:18px;">لديكِ 6 تقارير أداء جاهزة للمراجعة.</p>
+                        <ul style="margin-top:20px; text-align:right; list-style:none;">
+                            <li>✅ تقييم المعلمة موضي: 96%</li>
+                            <li>⚠️ اعتراض المعلمة صالحة: قيد الانتظار</li>
