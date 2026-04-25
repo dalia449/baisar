@@ -131,5 +131,77 @@
                         <span>التقدم: 92%</span>
                         <div class="progress-container"><div class="progress-bar" style="width:92%; background:var(--success)"></div></div>
                     </div>
-                    
+                    <div class="tag tag-success">أداء متميز</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="admin" class="view hidden">
+            <header>
+                <div class="view-title">الإدارة المدرسية | البندري الغامدي</div>
+            </header>
+            <div class="grid">
+                <div class="card"><h3>انضباط المدرسة</h3><p>94%</p></div>
+                <div class="card"><h3>تذاكر معلقة</h3><p>1</p></div>
+                <div class="card"><h3>نسبة النجاح</h3><p>88%</p></div>
+            </div>
+            <div class="section-box">
+                <h2>طلبات الاعتماد</h2>
+                <div class="student-row">
+                    <div><strong>تذكرة دعم عمار عايض</strong><br><small>مرسلة من داليا الغامدي</small></div>
+                    <div class="tag tag-warning">بانتظار الموافقة</div>
+                    <button class="action-btn" style="background:var(--success)">اعتماد القرار</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="parent" class="view hidden">
+            <header>
+                <div class="view-title">بوابة ولي الأمر | عايض ال وقيتان</div>
+            </header>
+            <div class="section-box">
+                <h2 style="margin-bottom:15px">🎫 تذكرة ذكية بخصوص: عمار</h2>
+                <div class="chat-box">
+                    <div class="bubble ai">مرحباً سيد عايض. نود إبلاغكم أن عمار أبدى سلوكاً مزعجاً اليوم في الفصل.</div>
+                    <div class="bubble user">أعتذر عن ذلك، ما هي الأسباب وكيف يمكننا مساعدته؟</div>
+                    <div class="bubble ai">يقترح الذكاء الاصطناعي تقليل الأنشطة المحفزة قبل المدرسة، وسنقوم بوضعه في "تحدي الهدوء" غداً.</div>
+                </div>
+                <div style="display:flex; gap:10px">
+                    <input type="text" placeholder="اكتب ردك هنا..." style="flex:1; padding:12px; border-radius:10px; border:1px solid var(--border)">
+                    <button class="action-btn">إرسال</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="student" class="view hidden">
+            <header>
+                <div class="view-title">بصيرة الطالب | عمار عايض</div>
+            </header>
+            <div class="grid">
+                <div class="card"><h3>نقاطي الإيجابية</h3><p style="color:var(--success)">120</p></div>
+                <div class="card"><h3>مستوى الالتزام</h3><p>تحسن ملحوظ</p></div>
+                <div class="card"><h3>تحديات اليوم</h3><p>1</p></div>
+            </div>
+            <div class="section-box">
+                <h2>خطة تحسين السلوك</h2>
+                <p style="margin-bottom:15px">الهدف: الحصول على لقب "الطالب الهادئ" 🌟</p>
+                <div class="progress-container" style="width:100%; height:15px; margin:0"><div class="progress-bar" style="width:45%"></div></div>
+                <p style="font-size:12px; margin-top:10px; color:var(--text-sub)">لقد حققت 45% من أهداف الالتزام لهذا الأسبوع.</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function showView(viewId) {
+            // إخفاء جميع الواجهات
+            document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
+            // إظهار الواجهة المختارة
+            document.getElementById(viewId).classList.remove('hidden');
+            // تحديث حالة القائمة الجانبية
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+        }
+    </script>
+</body>
+</html>
         
