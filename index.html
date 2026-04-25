@@ -60,5 +60,76 @@
         .tag-warning { background: #FFFBEB; color: var(--warning); }
         .tag-success { background: #ECFDF5; color: var(--success); }
 
-        /* Chat UI */
+        /* Chat UI */ 
+        chat-box { height: 280px; background: #F8FAFC; border-radius: 20px; padding: 20px; overflow-y: auto; margin-bottom: 15px; display: flex; flex-direction: column; gap: 12px; border: 1px inset #eee; }
+        .bubble { max-width: 75%; padding: 12px 18px; border-radius: 18px; font-size: 14px; line-height: 1.6; }
+        .bubble.ai { background: var(--primary); color: white; align-self: flex-start; border-bottom-right-radius: 4px; }
+        .bubble.user { background: white; border: 1px solid var(--border); align-self: flex-end; border-bottom-left-radius: 4px; }
+
+        .hidden { display: none; }
+        button.action-btn { background: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 10px; cursor: pointer; font-weight: 600; transition: 0.2s; }
+        button.action-btn:hover { background: #4F46E5; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo-container">
+            <img src="logo.png" alt="Logo" class="logo-img" onerror="this.src='https://cdn-icons-png.flaticon.com/512/2103/2103633.png'">
+            <div class="logo-text">بصيرة</div>
+        </div>
+        
+        <div class="nav-group-title">لوحات التحكم</div>
+        <div class="nav-link active" onclick="showView('counselor')">👩‍💼 المرشدة: داليا الغامدي</div>
+        <div class="nav-link" onclick="showView('teacher')">👩‍🏫 المعلمة: موضي ال فايز</div>
+        <div class="nav-link" onclick="showView('admin')">👔 الوكيلة: البندري الغامدي</div>
+        <div class="nav-link" onclick="showView('parent')">👨‍👧 ولي الأمر: عايض ال وقيتان</div>
+        <div class="nav-link" onclick="showView('student')">🎓 الطالب: عمار عايض</div>
+    </nav>
+
+    <main>
+        <div id="counselor" class="view">
+            <header>
+                <div class="view-title">إدارة الإرشاد الطلابي | داليا الغامدي</div>
+                <div class="tag tag-success">النظام نشط</div>
+            </header>
+            <div class="grid">
+                <div class="card"><h3>تنبيهات السلوك</h3><p style="color:var(--danger)">1</p></div>
+                <div class="card"><h3>تذاكر الدعم</h3><p>3</p></div>
+                <div class="card"><h3>جلسات اليوم</h3><p>2</p></div>
+            </div>
+            <div class="section-box">
+                <h2 style="margin-bottom:20px">التدخل السلوكي الفوري</h2>
+                <div class="student-row">
+                    <div class="student-info">
+                        <div class="avatar">عع</div>
+                        <div><strong>عمار عايض (رابع ابتدائي)</strong><br><small>المشكلة: إزعاج متكرر وتشتيت الزملاء</small></div>
+                    </div>
+                    <div class="tag tag-danger">بحاجة لتدخل</div>
+                    <button class="action-btn" onclick="alert('تم إرسال إشعار فوري لولي الأمر عايض ال وقيتان')">إشعار ولي الأمر</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="teacher" class="view hidden">
+            <header>
+                <div class="view-title">متابعة الفصول | موضي ال فايز</div>
+            </header>
+            <div class="section-box">
+                <h2 style="margin-bottom:20px">تقدم الطلاب الأكاديمي</h2>
+                <div class="student-row">
+                    <div class="student-info"><strong>سارة محمد (رابع ابتدائي)</strong></div>
+                    <div style="display:flex; align-items:center">
+                        <span>التقدم: 65%</span>
+                        <div class="progress-container"><div class="progress-bar" style="width:65%; background:var(--warning)"></div></div>
+                    </div>
+                    <div class="tag tag-warning">ضعف بالرياضيات</div>
+                </div>
+                <div class="student-row">
+                    <div class="student-info"><strong>أحمد علي (ثاني ابتدائي)</strong></div>
+                    <div style="display:flex; align-items:center">
+                        <span>التقدم: 92%</span>
+                        <div class="progress-container"><div class="progress-bar" style="width:92%; background:var(--success)"></div></div>
+                    </div>
+                    
         
