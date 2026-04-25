@@ -84,3 +84,22 @@
                 
                 // رسم البياني
                 const ctx = document.getElementById('myChart').
+                    getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['حاسب', 'علوم', 'لغتي', 'رياضيات'],
+                        datasets: [{ label: 'نسبة النجاح', data: [98, 85, 80, 75], backgroundColor: '#6366f1' }]
+                    }
+                });
+            } else if (userValue === "هيا") {
+                nameDisplay.innerText = "أهلاً أ. هيا الغامدي";
+                view.innerHTML = "<h3>إدارة المعلمات</h3><p style='margin-top:10px;'>لديكِ 2 اعتراضات قيد الانتظار من المعلمة صالحة.</p>";
+            } else {
+                nameDisplay.innerText = "مرحباً: " + userValue;
+                view.innerHTML = "<h3>لوحة المعلومات</h3><p>تم الدخول بنجاح إلى ملفك الشخصي في نظام بصيرة.</p>";
+            }
+        }
+    </script>
+</body>
+</html>
