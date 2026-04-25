@@ -3,114 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة بصيرة | المنظومة التعليمية المتكاملة 2026</title>
+    <title>بصيرة | المنظومة المتكاملة</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;600;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        :root { --primary: #6366F1; --bg: #F8FAFC; --text: #1E293B; --danger: #EF4444; --success: #10B981; }
+        :root { --primary: #6366F1; --bg: #FFFFFF; } /* تم تغيير الخلفية للأبيض الصافي */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Noto Sans Arabic', sans-serif; }
-        body { background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; }
-
-        /* شاشة تسجيل الدخول المحدثة بالشعار */
+        body { background: #FFFFFF; height: 100vh; overflow: hidden; }
+        
+        /* شاشة تسجيل دخول بيضاء بالكامل */
         #login-page { 
             position: fixed; inset: 0; 
-            background: linear-gradient(rgba(99, 102, 241, 0.8), rgba(67, 56, 202, 0.9)), url('https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=2000');
-            background-size: cover; display: flex; align-items: center; justify-content: center; z-index: 9999; 
+            background: #FFFFFF; /* إزالة التدرج اللوني والصورة */
+            display: flex; align-items: center; justify-content: center; z-index: 9999; 
         }
-        .login-card { background: white; padding: 40px; border-radius: 35px; width: 450px; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.3); }
+        .login-card { 
+            background: white; padding: 40px; width: 450px; text-align: center; 
+            border: 1px solid #F1F5F9; /* حدود خفيفة جداً */
+        }
         
-        /* تنسيق صورة الشعار */
-        .logo-img { width: 120px; height: auto; margin-bottom: 20px; border-radius: 15px; }
+        .logo-img { width: 220px; height: auto; margin-bottom: 30px; }
 
-        .login-input { width: 100%; padding: 15px; margin: 10px 0; border-radius: 12px; border: 2px solid #E2E8F0; text-align: center; font-size: 16px; }
-        .login-btn { width: 100%; padding: 15px; border-radius: 12px; border: none; background: var(--primary); color: white; font-weight: 700; cursor: pointer; font-size: 18px; }
-
-        /* النظام الأساسي */
+        .login-input { 
+            width: 100%; padding: 15px; margin: 10px 0; border-radius: 12px; 
+            border: 1.5px solid #E2E8F0; text-align: center; font-size: 16px; 
+            background: #F8FAFC; 
+        }
+        .login-btn { 
+            width: 100%; padding: 15px; border-radius: 12px; border: none; 
+            background: var(--primary); color: white; font-weight: 700; 
+            cursor: pointer; font-size: 18px; margin-top: 10px;
+        }
+        
+        /* النظام الأساسي بعد الدخول */
         #main-system { display: none; height: 100vh; flex-direction: row; }
         nav { width: 280px; background: white; border-left: 1px solid #E2E8F0; padding: 25px; display: flex; flex-direction: column; }
-        main { flex: 1; padding: 30px; overflow-y: auto; background: #F1F5F9; }
-        .section { background: white; padding: 25px; border-radius: 24px; border: 1px solid #E2E8F0; margin-bottom: 20px; }
-        .nav-link { width: 100%; padding: 12px; margin: 5px 0; border: none; border-radius: 10px; text-align: right; cursor: pointer; background: none; font-weight: 600; color: #64748B; }
-        .nav-link.active { background: var(--primary); color: white; }
-        .badge { padding: 4px 10px; border-radius: 8px; font-size: 12px; font-weight: 700; }
-        .bg-red { background: #FEE2E2; color: #EF4444; }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        main { flex: 1; padding: 30px; overflow-y: auto; background: #F8FAFC; }
+        .section { background: white; padding: 25px; border-radius: 20px; border: 1px solid #E2E8F0; margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; }
         th, td { text-align: right; padding: 12px; border-bottom: 1px solid #F1F5F9; }
+        .badge { padding: 4px 10px; border-radius: 8px; font-size: 12px; }
+        .bg-red { background: #FEE2E2; color: #EF4444; }
     </style>
 </head>
 <body>
 
     <div id="login-page">
         <div class="login-card">
-            <img src="logo.png" alt="Basira Logo" class="logo-img">
+            <img src="logo.png.PNG" alt="Basira Logo" class="logo-img" onerror="this.src='logo.png'">
             
-            <h1>منصة بصيرة</h1>
-            <p style="color:#64748B; margin-bottom: 20px;">نظام الإدارة المدرسية الذكي</p>
+            <h1 style="font-size: 24px; color: #1E293B; margin-bottom: 5px;">منصة بصيرة</h1>
+            <p style="color:#64748B; margin-bottom: 30px; font-size: 14px;">نظام الإدارة المدرسية المتكامل</p>
             
-            <input type="text" id="username" class="login-input" placeholder="اسم المستخدم (مثال: هيا، عمار، وزارة)">
+            <input type="text" id="username" class="login-input" placeholder="اسم المستخدم">
             <input type="password" class="login-input" placeholder="كلمة المرور">
-            <button onclick="handleLogin()" class="login-btn">دخول للنظام</button>
+            <button onclick="handleLogin()" class="login-btn">تسجيل الدخول</button>
         </div>
     </div>
 
     <div id="main-system">
         <nav>
-            <div id="user-header" style="margin-bottom: 30px; padding: 15px; background: #F8FAFC; border-radius: 20px; border: 1px solid #E2E8F0;"></div>
-            <div id="menu-items"></div>
-            <button onclick="location.reload()" class="nav-link" style="color: var(--danger); margin-top: auto;">🚪 خروج</button>
+            <div id="user-header" style="margin-bottom: 30px; padding: 15px; background: #F8FAFC; border-radius: 15px; border: 1px solid #E2E8F0;"></div>
+            <div id="menu-items">
+                <button class="nav-link" style="width:100%; text-align:right; padding:12px; border:none; background:none; font-weight:600; color:#64748B; cursor:pointer;">📊 لوحة التحكم</button>
+                <button class="nav-link" style="width:100%; text-align:right; padding:12px; border:none; background:none; font-weight:600; color:#64748B; cursor:pointer;">📝 التقارير</button>
+            </div>
+            <button onclick="location.reload()" style="margin-top:auto; color:var(--danger); border:none; background:none; cursor:pointer; font-weight:700; text-align:right; padding:10px;">🚪 تسجيل الخروج</button>
         </nav>
         <main id="content-area"></main>
     </div>
 
     <script>
         const appData = {
-            students: [
-                { name: 'عمار عايض', parent: 'عايض ال وقيتان', alert: 'إزعاج سلوكي', points: 88, health: 'سليم', transport: 'منتظم' },
-              { name: 'سارة محمد', parent: 'محمد', alert: 'غياب متكرر', points: 65, health: 'عذر طبي', transport: 'غائب السائق' },
-                { name: 'أحمد علي', parent: 'علي', alert: 'تدني الرياضيات', points: 45, health: 'سليم', transport: 'منتظم' },
-                { name: 'جوري علي', parent: 'علي', alert: 'تحتاج تحفيز حاسب', points: 98, health: 'سليم', transport: 'منتظم' },
-                { name: 'راكان ساعد', parent: 'ساعد', alert: 'تشتت لغتي', points: 72, health: 'سليم', transport: 'منتظم' },
-                { name: 'ود ساعد', parent: 'ساعد', alert: 'تأخر صباحي', points: 80, health: 'سليم', transport: 'منتظم' }
-            ],
-            teachers: [
-                { name: 'موضي ال فايز', sub: 'الشريعة الإسلامية', rate: 96 },
-                { name: 'هدى', sub: 'الحاسب', rate: 92 },
-                { name: 'العنود', sub: 'اللغة الإنجليزية', rate: 89 },
-                { name: 'فادية', sub: 'الاجتماعيات', rate: 91 },
-                { name: 'صالحة', sub: 'لغتي', rate: 84 },
-                { name: 'حصة', sub: 'العلوم', rate: 87 }
-            ]
-        };
-
-        function handleLogin() {
-            const user = document.getElementById('username').value;
-            if (!user) return alert('يرجى إدخال اسم المستخدم');
-            document.getElementById('login-page').style.display = 'none';
-            document.getElementById('main-system').style.display = 'flex';
-            renderUI(user);
-        }
-
-        function renderUI(user) {
-            const header = document.getElementById('user-header');
-            const main = document.getElementById('content-area');
-
-            if (user === 'هيا') {
-                header.innerHTML = <strong>هيا الغامدي</strong><br><small>مديرة المدرسة</small>;
-                main.innerHTML = <div class="section"><h2>تقييم المعلمات</h2><table><tr><th>المعلمة</th><th>المادة</th><th>التقييم</th></tr> + 
-                    appData.teachers.map(t => <tr><td>${t.name}</td><td>${t.sub}</td><td>${t.rate}%</td></tr>`).join('') + `</table></div>;
-            } else if (user === 'عايض') {
-                header.innerHTML = <strong>عايض ال وقيتان</strong><br><small>ولي أمر عمار</small>;
-                main.innerHTML = <div class="section"><h2>متابعة الطالب: عمار</h2><p>النقاط: 88/100</p><p>الحالة: <span class="badge bg-red">إزعاج سلوكي</span></p></div>;
-            } else if (user === 'وزارة') {
-                header.innerHTML = <strong>وزارة التعليم</strong><br><small>الإشراف</small>;
-                main.innerHTML = <div class="section"><h2>تحليل الأداء المدرسي</h2><canvas id="vChart"></canvas></div>;
-                setTimeout(() => { new Chart(document.getElementById('vChart'), { type: 'bar', data: { labels: ['حاسب', 'شريعة', 'علوم', 'لغتي'], datasets: [{ label: 'مستوى التحصيل', data: [95, 98, 85, 80], backgroundColor: '#6366F1' }] } }); }, 100);
-            } else {
-                header.innerHTML = <strong>${user}</strong>;
-                main.innerHTML = <div class="section"><h2>قائمة الطلاب (بصيرة)</h2><table><tr><th>الطالب</th><th>التنبيه</th><th>النقل</th></tr> + 
-                    appData.students.map(s => <tr><td>${s.name}</td><td>${s.alert}</td><td>${s.transport}</td></tr>`).join('') + `</table></div>;
-            }
-        }
-    </script>
-</body>
-</html>
+            
