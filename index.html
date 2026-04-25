@@ -5,104 +5,80 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>منصة بصيرة | تسجيل الدخول</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root { --primary: #6366F1; --text: #1E293B; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Noto Sans Arabic', sans-serif; }
+        body { background-color: #FFFFFF; height: 100vh; overflow: hidden; }
         
-        /* شاشة بيضاء بالكامل */
-        body { 
-            background-color: #FFFFFF; 
-            height: 100vh; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            overflow: hidden;
-        }
+        /* شاشة الدخول */
+        #login-page { position: fixed; inset: 0; background: #fff; display: flex; align-items: center; justify-content: center; z-index: 9999; }
+        .login-container { width: 100%; max-width: 400px; padding: 20px; text-align: center; }
+        .logo-img { width: 250px; height: auto; margin-bottom: 20px; }
+        input { width: 100%; padding: 16px; margin-bottom: 15px; border-radius: 12px; border: 1.5px solid #E2E8F0; background: #F8FAFC; text-align: center; font-size: 16px; }
+        .login-btn { width: 100%; padding: 16px; border-radius: 12px; border: none; background: var(--primary); color: white; font-size: 18px; font-weight: 700; cursor: pointer; }
 
-        .login-container {
-            width: 100%;
-            max-width: 400px;
-            padding: 20px;
-            text-align: center;
-        }
-
-        /* تنسيق اللوقو ليكون بطل الشاشة */
-        .logo-img {
-            width: 250px; /* حجم مناسب للوقو */
-            height: auto;
-            margin-bottom: 30px;
-        }
-
-        h1 { font-size: 24px; color: var(--text); margin-bottom: 10px; font-weight: 800; }
-        p { color: #64748B; margin-bottom: 30px; font-size: 15px; }
-
-        .input-group { margin-bottom: 15px; }
-        
-        input {
-            width: 100%;
-            padding: 16px;
-            border-radius: 12px;
-            border: 1.5px solid #E2E8F0;
-            background: #F8FAFC;
-            font-size: 16px;
-            text-align: center;
-            transition: 0.3s;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: var(--primary);
-            background: #FFFFFF;
-            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
-        }
-
-        .login-btn {
-            width: 100%;
-            padding: 16px;
-            border-radius: 12px;
-            border: none;
-            background: var(--primary);
-            color: white;
-            font-size: 18px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.3s;
-            margin-top: 10px;
-        }
-
-        .login-btn:hover { background: #4338CA; transform: translateY(-2px); }
-
-        /* تذييل بسيط */
-        .footer-text {
-            margin-top: 40px;
-            font-size: 12px;
-            color: #94A3B8;
-            letter-spacing: 1px;
-        }
+        /* واجهة النظام (مخفية في البداية) */
+        #main-system { display: none; height: 100vh; flex-direction: column; padding: 20px; background: #F1F5F9; overflow-y: auto; }
+        .dashboard-card { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
     </style>
 </head>
 <body>
 
-    <div class="login-container">
-        <img src="logo.png.PNG" alt="بصيرة" class="logo-img">
-        
-        <h1>تسجيل الدخول</h1>
-        <p>مرحباً بك في نظام بصيرة الذكي</p>
-
-        <div class="input-group">
-            <input type="text" placeholder="اسم المستخدم">
-        </div>
-        
-        <div class="input-group">
+    <div id="login-page">
+        <div class="login-container">
+            <img src="logo.png.PNG" alt="بصيرة" class="logo-img">
+            <h1>تسجيل الدخول</h1>
+            <p style="color: #64748B; margin-bottom: 25px;">أدخل "وزارة" لتجربة النظام</p>
+            <input type="text" id="username" placeholder="اسم المستخدم">
             <input type="password" placeholder="كلمة المرور">
-        </div>
-
-        <button class="login-btn" onclick="alert('جاري الدخول...')">دخول للنظام</button>
-
-        <div class="footer-text">
-            B A S I R A &copy; 2026
+            <button class="login-btn" onclick="checkLogin()">دخول للنظام</button>
         </div>
     </div>
 
+    <div id="main-system">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <h2 id="welcome-msg">مرحباً بك</h2>
+            <button onclick="location.reload()" style="padding:8px 15px; border-radius:10px; border:none; background:#EF4444; color:white; cursor:pointer;">تسجيل خروج</button>
+        </div>
+        
+        <div class="dashboard-card">
+            <h3>تحليل الأداء المدرسي - وزارة التعليم</h3>
+            <canvas id="myChart" style="max-height: 400px;"></canvas>
+        </div>
+    </div>
+
+    <script>
+        function checkLogin() {
+            const user = document.getElementById('username').value;
+            
+            if (user === 'وزارة'  user === 'هيا'  user === 'عايض') {
+                // إخفاء صفحة الدخول وإظهار النظام
+                document.getElementById('login-page').style.display = 'none';
+                document.getElementById('main-system').style.display = 'flex';
+                document.getElementById('welcome-msg').innerText = "مرحباً بك: " + user;
+                
+                // تشغيل الرسم البياني فوراً
+                renderChart();
+            } else {
+                alert('يرجى إدخال اسم مستخدم صحيح (مثال: وزارة)');
+            }
+        }
+
+        function renderChart() {
+            const ctx = document.getElementById('myChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['الرياضيات', 'العلوم', 'الحاسب', 'لغتي'],
+                    datasets: [{
+                        label: 'نسبة الإنجاز %',
+                        data: [85, 92, 98, 80],
+                        backgroundColor: '#6366F1'
+                    }]
+                }
+            });
+        }
+    </script>
 </body>
 </html>
