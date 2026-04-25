@@ -3,305 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Basira | منصة بصيرة الذكية</title>
+    <title>Basira | نظام بصيرة المتكامل</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=Noto+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
             --primary: #6366F1;
             --primary-soft: #EEF2FF;
-            --bg: #F9FAFB;
+            --bg: #F8FAFC;
             --card: #FFFFFF;
             --text-main: #111827;
-            --text-sub: #6B7280;
-            --border: #F3F4F6;
+            --text-sub: #64748B;
+            --border: #E2E8F0;
             --danger: #E11D48;
             --warning: #F59E0B;
+            --success: #10B981;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Plus Jakarta Sans', 'Noto Sans Arabic', sans-serif;
-            background: var(--bg);
-            color: var(--text-main);
-            display: flex;
-            height: 100vh;
-        }
+        body { font-family: 'Plus Jakarta Sans', 'Noto Sans Arabic', sans-serif; background: var(--bg); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
 
         /* Sidebar */
-        nav {
-            width: 280px;
-            background: var(--card);
-            border-left: 1px solid var(--border);
-            padding: 32px 24px;
-            display: flex;
-            flex-direction: column;
-        }
+        nav { width: 280px; background: var(--card); border-left: 1px solid var(--border); padding: 24px; display: flex; flex-direction: column; }
+        .logo-container { margin-bottom: 30px; display: flex; align-items: center; gap: 12px; }
+        .logo-img { width: 50px; height: 50px; object-fit: contain; border-radius: 8px; }
+        .logo-text { font-size: 22px; font-weight: 800; color: var(--primary); }
+        
+        .nav-group-title { font-size: 11px; color: var(--text-sub); text-transform: uppercase; margin: 20px 0 10px; letter-spacing: 1px; }
+        .nav-link { padding: 12px 16px; border-radius: 12px; color: var(--text-sub); text-decoration: none; margin-bottom: 5px; cursor: pointer; transition: 0.2s; display: block; font-size: 14px; }
+        .nav-link.active { background: var(--primary-soft); color: var(--primary); font-weight: 700; }
 
-        .logo-box {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 48px;
-        }
+        /* Main Content */
+        main { flex: 1; padding: 30px; overflow-y: auto; }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; background: white; padding: 20px; border-radius: 20px; border: 1px solid var(--border); box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .view-title { font-size: 20px; font-weight: 700; }
 
-        .logo-box img { width: 45px; height: 45px; border-radius: 10px; }
+        /* Stats Grid */
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 25px; }
+        .card { background: var(--card); padding: 20px; border-radius: 20px; border: 1px solid var(--border); transition: 0.3s; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .card h3 { font-size: 13px; color: var(--text-sub); margin-bottom: 10px; }
+        .card p { font-size: 24px; font-weight: 700; }
 
-        .nav-link {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 14px 18px;
-            border-radius: 14px;
-            color: var(--text-sub);
-            text-decoration: none;
-            margin-bottom: 8px;
-            transition: 0.2s;
-            font-weight: 600;
-        }
+        /* Sections */
+        .section-box { background: white; border-radius: 24px; border: 1px solid var(--border); padding: 25px; margin-bottom: 25px; }
+        .student-row { display: flex; align-items: center; justify-content: space-between; padding: 18px 0; border-bottom: 1px solid var(--border); }
+        .student-row:last-child { border-bottom: none; }
+        .student-info { display: flex; align-items: center; gap: 15px; }
+        .avatar { width: 45px; height: 45px; border-radius: 14px; background: var(--primary-soft); color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 700; }
+        
+        /* Progress & Tags */
+        .progress-container { width: 120px; height: 8px; background: #EDF2F7; border-radius: 10px; overflow: hidden; margin: 0 15px; }
+        .progress-bar { height: 100%; background: var(--primary); border-radius: 10px; }
+        .tag { padding: 6px 14px; border-radius: 10px; font-size: 12px; font-weight: 600; }
+        .tag-danger { background: #FFF1F2; color: var(--danger); }
+        .tag-warning { background: #FFFBEB; color: var(--warning); }
+        .tag-success { background: #ECFDF5; color: var(--success); }
 
-        .nav-link.active { background: var(--primary-soft); color: var(--primary); }
-
-        /* Main */
-        main { flex: 1; padding: 40px; overflow-y: auto; }
-
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 32px;
-        }
-
-        /* Stats Section */
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-            margin-bottom: 32px;
-        }
-
-        .card {
-            background: var(--card);
-            padding: 24px;
-            border-radius: 24px;
-            border: 1px solid var(--border);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.02);
-        }
-
-        .card h3 { font-size: 13px; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
-        .card p { font-size: 28px; font-weight: 700; color: var(--text-main); }
-
-        /* Grid Layout */
-        .grid {
-            display: grid;
-            grid-template-columns: 1.8fr 1.2fr;
-            gap: 24px;
-        }
-
-        /* AI Chat System */
-        .ticket-section {
-            background: var(--card);
-            border-radius: 28px;
-            padding: 28px;
-            border: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .chat-area {
-            height: 380px;
-            overflow-y: auto;
-            padding: 15px;
-            background: #FDFDFF;
-            border-radius: 20px;
-            margin-bottom: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .bubble {
-            max-width: 80%;
-            padding: 14px 18px;
-            border-radius: 18px;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .bubble.ai { background: var(--primary); color: white; align-self: flex-start; border-bottom-right-radius: 4px; }
-        .bubble.user { background: var(--primary-soft); color: var(--primary); align-self: flex-end; border-bottom-left-radius: 4px; }
-
-        .input-box {
-            display: flex;
-            gap: 12px;
-            background: #fff;
-            padding: 6px;
-            border-radius: 16px;
-            border: 1px solid var(--border);
-        }
-
-        .input-box input { flex: 1; border: none; padding: 12px; outline: none; font-family: inherit; }
-
-        .btn-send { background: var(--primary); color: white; border: none; padding: 0 24px; border-radius: 12px; cursor: pointer; font-weight: 600; }
-
-        /* Performance Alerts */
-        .alerts-section {
-            background: var(--card);
-            border-radius: 28px;
-            padding: 28px;
-            border: 1px solid var(--border);
-        }
-
-        .student-card {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 16px;
-            background: #FAFAFA;
-            border-radius: 18px;
-            margin-bottom: 12px;
-            border: 1px solid var(--border);
-        }
-
-        .avatar {
-            width: 44px;
-            height: 44px;
-            background: var(--primary-soft);
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 12px;
-            font-weight: 700;
-        }
-
-        .tag {
-            padding: 4px 10px;
-            border-radius: 8px;
-            font-size: 11px;
-            font-weight: 700;
-            margin-right: auto;
-        }
-
-        .tag.red { background: #FFF1F2; color: var(--danger); }
-        .tag.orange { background: #FFFBEB; color: var(--warning); }
-
-    </style>
-</head>
-<body>
-
-    <nav>
-        <div class="logo-box">
-            <img src="logo.png" alt="Basira" onerror="this.src='https://cdn-icons-png.flaticon.com/512/2103/2103633.png'">
-            <span style="font-size: 22px; font-weight: 800; color: var(--primary)">Basira</span>
-        </div>
-        <a href="#" class="nav-link active">🏠 الرئيسية</a>
-        <a href="#" class="nav-link">👨‍🎓 الطلاب</a>
-        <a href="#" class="nav-link">🎫 تذاكر أولياء الأمور</a>
-        <a href="#" class="nav-link">📊 التقارير</a>
-    </nav>
-
-    <main>
-        <header>
-            <div>
-                <h1 style="font-size: 26px;">لوحة متابعة الأداء الذكية</h1>
-                <p style="color: var(--text-sub); font-size: 14px;">مرحباً داليا، إليك ملخص حالة الفصل اليوم.</p>
-            </div>
-        </header>
-
-        <section class="stats">
-            <div class="card">
-                <h3>إجمالي تذاكر اليوم</h3>
-                <p>24</p>
-            </div>
-            <div class="card">
-                <h3>تنبيهات سلوكية</h3>
-                <p style="color: var(--danger)">3</p>
-            </div>
-            <div class="card">
-                <h3>تنبيهات أكاديمية</h3>
-                <p style="color: var(--warning)">8</p>
-            </div>
-        </section>
-
-        <div class="grid">
-            <section class="ticket-section">
-                <h2 style="margin-bottom: 15px; font-size: 17px;">🎫 تذكرة لولي الأمر: عايض ال وقيتان</h2>
-                <div class="chat-area" id="chat">
-                    <div class="bubble ai">مرحباً بالسيد عايض ال وقيتان. تم فتح هذه التذكرة آلياً لمناقشة تحديثات الطالب عمار. كيف يمكننا مساعدتك؟</div>
-                    <div class="bubble user">وصلني إشعار بخصوص سلوك عمار في الصف، هل يمكنني معرفة التفاصيل؟</div>
-                    <div class="bubble ai">نعم يا سيد عايض، رصد نظام "بصيرة" تكرار إزعاج بالصف اليوم. نوصي بمراجعة خطة الانضباط الذكية المقترحة.</div>
-                </div>
-                <div class="input-box">
-                    <input type="text" id="chat-input" placeholder="اكتب رسالتك لولي الأمر...">
-                    <button class="btn-send" onclick="sendMsg()">إرسال</button>
-                </div>
-            </section>
-
-            <section class="alerts-section">
-                <h2 style="margin-bottom: 20px; font-size: 17px;">🚨 تنبيهات الأداء والسلوك</h2>
-                
-                <div class="student-card">
-                    <div class="avatar">عع</div>
-                    <div>
-                        <p style="font-weight: 700; font-size: 14px;">عمار عايض</p>
-                        <p style="font-size: 12px; color: var(--text-sub)">السبب: إزعاج متكرر بالصف</p>
-                    </div>
-                    <span class="tag red">سلوكي</span>
-                </div>
-
-                <div class="student-card">
-                    <div class="avatar">س م</div>
-                    <div>
-                        <p style="font-weight: 700; font-size: 14px;">سارة محمد</p>
-                        <p style="font-size: 12px; color: var(--text-sub)">السبب: انخفاض مفاجئ في الرياضيات</p>
-                    </div>
-                    <span class="tag orange">أكاديمي</span>
-                </div>
-
-                <div class="student-card" style="opacity: 0.6">
-                    <div class="avatar">ف خ</div>
-                    <div>
-                        <p style="font-weight: 700; font-size: 14px;">فهد خالد</p>
-                        <p style="font-size: 12px; color: var(--text-sub)">الحالة: تذكرة مغلقة بنجاح</p>
-                    </div>
-                    <span class="tag" style="background: #ECFDF5; color: #059669;">مكتمل</span>
-                </div>
-            </section>
-        </div>
-    </main>
-
-    <script>
-        function sendMsg() {
-            const input = document.getElementById('chat-input');
-            const chat = document.getElementById('chat');
-            if(!input.value.trim()) return;
-
-            const uDiv = document.createElement('div');
-            uDiv.className = 'bubble user';
-            uDiv.innerText = input.value;
-            chat.appendChild(uDiv);
-
-            setTimeout(() => {
-                const aDiv = document.createElement('div');
-                aDiv.className = 'bubble ai';
-                
-                // ردود ذكية مخصصة
-                const val = input.value;
-                if(val.includes("عمار") || val.includes("ازعاج")) {
-                    aDiv.innerText = "تم توثيق الملاحظة. نظام بصيرة يقترح توجيه رسالة توعوية لولي الأمر عايض ال وقيتان لزيادة التعاون البيت والمدرسة.";
-                } else {
-                    aDiv.innerText = "تم إرسال ردك بنجاح إلى ولي الأمر عبر تطبيق بصيرة.";
-                }
-                
-                chat.appendChild(aDiv);
-                chat.scrollTop = chat.scrollHeight;
-            }, 800);
-
-            input.value = "";
-            chat.scrollTop = chat.scrollHeight;
-        }
-    </script>
-</body>
-</html>
+        /* Chat UI */
+        
