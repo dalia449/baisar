@@ -77,3 +77,29 @@
                         <ul style="margin-top:20px; text-align:right; list-style:none;">
                             <li>✅ تقييم المعلمة موضي: 96%</li>
                             <li>⚠️ اعتراض المعلمة صالحة: قيد الانتظار</li>
+</ul>`;
+            } else {
+                return `<h3>ملف المستخدم: ${user}</h3>
+                        <p style="margin-top:20px;">تم تسجيل الدخول بنجاح إلى منظومة بصيرة الذكية.</p>`;
+            }
+        }
+
+        function createChart() {
+            const ctx = document.getElementById('myChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['حاسب', 'رياضيات', 'علوم', 'لغتي'],
+                    datasets: [{
+                        label: 'نسبة النجاح %',
+                        data: [98, 75, 88, 82],
+                        backgroundColor: '#6366f1',
+                        borderRadius: 10
+                    }]
+                },
+                options: { scales: { y: { beginAtZero: true, max: 100 } } }
+            });
+        }
+    </script>
+</body>
+</html>
