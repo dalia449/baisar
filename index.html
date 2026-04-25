@@ -3,21 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بصيرة | منصة التحليل والدعم الذكي</title>
+    <title>بصيرة | لوحة التحليل والدعم الذكي</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
     
     <style>
+        /* تعريف متغيرات الألوان من لوحة الألوان المرفقة */
         :root {
-            --primary-color: #4F46E5;
+            --primary-color: #4F46E5; /* البنفسجي الأساسي */
             --secondary-color: #6366F1;
             --success-color: #22C55E;
             --error-color: #EF4444;
             --warning-color: #F59E0B;
-            --background: #F8FAFC;
-            --surface: #FFFFFF;
-            --text-primary: #0F172A;
-            --text-secondary: #64748B;
-            --border: #E2E8F0;
+            --background: #F8FAFC; /* خلفية الصفحة */
+            --surface: #FFFFFF; /* خلفية البطاقات */
+            --text-primary: #0F172A; /* النص الأساسي غامق */
+            --text-secondary: #64748B; /* النص الثانوي */
+            --border: #E2E8F0; /* لون الحدود */
         }
 
         * {
@@ -35,7 +36,7 @@
             overflow: hidden;
         }
 
-        /* Sidebar */
+        /*Sidebar - جهة اليسار */
         .sidebar {
             width: 260px;
             background: var(--surface);
@@ -81,12 +82,12 @@
         }
 
         .nav-item.active, .nav-item:hover {
-            background: #EEF2FF;
+            background: #EEF2FF; /* خلفية فاتحة عند الاختيار */
             color: var(--primary-color);
             font-weight: 600;
         }
 
-        /* Main Content */
+        /* المحتوى الرئيسي */
         .main-content {
             flex: 1;
             overflow-y: auto;
@@ -100,7 +101,7 @@
             margin-bottom: 32px;
         }
 
-        /* Dashboard Cards */
+        /* بطاقات الإحصائيات Top Cards */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -127,14 +128,14 @@
             font-weight: 700;
         }
 
-        /* Layout Grid */
+        /* التوزيع الوسطي */
         .content-grid {
             display: grid;
             grid-template-columns: 2fr 1.2fr;
             gap: 24px;
         }
 
-        /* Ticket System Section */
+        /* نظام التذاكر الذكي Ticket Box */
         .ticket-box {
             background: var(--surface);
             border-radius: 24px;
@@ -146,218 +147,4 @@
         .ticket-header {
             font-weight: 700;
             font-size: 18px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .chat-container {
-            height: 300px;
-            background: #F1F5F9;
-            border-radius: 16px;
-            padding: 16px;
-            overflow-y: auto;
-            margin-bottom: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .msg {
-            max-width: 80%;
-            padding: 12px 16px;
-            border-radius: 12px;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-
-        .msg.ai {
-            background: var(--primary-color);
-            color: white;
-            align-self: flex-start;
-            border-bottom-right-radius: 2px;
-        }
-
-        .msg.user {
-            background: var(--border);
-            color: var(--text-primary);
-            align-self: flex-end;
-            border-bottom-left-radius: 2px;
-        }
-
-        .input-group {
-            display: flex;
-            gap: 10px;
-        }
-
-        input {
-            flex: 1;
-            padding: 12px 16px;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            outline: none;
-        }
-
-        button {
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: 0.3s;
-        }
-
-        button:hover {
-            background: var(--secondary-color);
-        }
-
-        /* Right Panel: Student List */
-        .student-list {
-            background: var(--surface);
-            border-radius: 24px;
-            padding: 24px;
-            border: 1px solid var(--border);
-        }
-
-        .student-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 0;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .avatar {
-            width: 40px;
-            height: 40px;
-            background: #DDD6FE;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: var(--primary-color);
-        }
-
-        .badge {
-            font-size: 11px;
-            padding: 4px 8px;
-            border-radius: 20px;
-            background: #FEF2F2;
-            color: var(--error-color);
-            margin-right: auto;
-        }
-
-    </style>
-</head>
-<body>
-
-    <div class="sidebar">
-        <div class="logo-area">
-            <img src="logo.png" alt="Basira Logo" class="logo-img" onerror="this.src='https://via.placeholder.com/40'">
-            <div class="logo-text">بصيرة</div>
-        </div>
-        <ul class="nav-menu">
-            <li class="nav-item active">🏠 الرئيسية</li>
-            <li class="nav-item">👨‍🎓 الطلاب</li>
-            <li class="nav-item">🎫 التذاكر الذكية</li>
-            <li class="nav-item">📊 التحليلات</li>
-            <li class="nav-item">⚙️ الإعدادات</li>
-        </ul>
-    </div>
-
-    <div class="main-content">
-        <div class="header-top">
-            <h1>لوحة التحكم</h1>
-            <div style="color: var(--text-secondary)">مرحباً، داليا 👋</div>
-        </div>
-
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-label">إجمالي الطلاب</div>
-                <div class="stat-value">428</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">تذاكر الدعم النشطة</div>
-                <div class="stat-value" style="color: var(--warning-color)">5</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">طلاب يحتاجون تدخل</div>
-                <div class="stat-value" style="color: var(--error-color)">12</div>
-            </div>
-        </div>
-
-        <div class="content-grid">
-            <div class="ticket-box">
-                <div class="ticket-header">🤖 نظام التذاكر الذكي (AI)</div>
-                <div class="chat-container" id="chat">
-                    <div class="msg ai">مرحباً بك في نظام بصيرة الذكي. كيف يمكنني مساعدتك أكاديمياً اليوم؟</div>
-                </div>
-                <div class="input-group">
-                    <input type="text" id="user-input" placeholder="اكتب مشكلتك هنا (مثال: لم أفهم درس المصفوفات)...">
-                    <button onclick="sendMessage()">إرسال</button>
-                </div>
-            </div>
-
-            <div class="student-list">
-                <div class="ticket-header">🚨 تنبيهات الأداء</div>
-                <div class="student-item">
-                    <div class="avatar">أع</div>
-                    <div>
-                        <div style="font-weight: 600;">أحمد علي</div>
-                        <div style="font-size: 12px; color: var(--text-secondary);">هبوط في الرياضيات</div>
-                    </div>
-                    <div class="badge">خطر تعثر</div>
-                </div>
-                <div class="student-item">
-                    <div class="avatar">س م</div>
-                    <div>
-                        <div style="font-weight: 600;">سارة محمد</div>
-                        <div style="font-size: 12px; color: var(--text-secondary);">غياب متكرر</div>
-                    </div>
-                    <div class="badge">تنبيه</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        function sendMessage() {
-            const input = document.getElementById('user-input');
-            const chat = document.getElementById('chat');
             
-            if (input.value.trim() === "") return;
-
-            // User Message
-            const userMsg = document.createElement('div');
-            userMsg.className = 'msg user';
-            userMsg.innerText = input.value;
-            chat.appendChild(userMsg);
-
-            // AI Logic (Simulation of your idea)
-            setTimeout(() => {
-                const aiMsg = document.createElement('div');
-                aiMsg.className = 'msg ai';
-                
-                const text = input.value.toLowerCase();
-                if (text.includes("فهمت") || text.includes("صعب")) {
-                    aiMsg.innerText = "فهمت مشكلتك. تم تحليل مستوى الصعوبة، سأقوم بإنشاء خطة دعم مبسطة لهذا الدرس الآن.";
-                } else if (text.length < 5) {
-                    aiMsg.innerText = "عذراً، لم يتم فهم المصطلح المذكور بشكل كامل. هل يمكنك توضيح المشكلة أكثر لمساعدتك؟";
-                } else {
-                    aiMsg.innerText = "تذكرة ذكية مفتوحة: جاري تحليل استفسارك وسيتم الرد عليك فوراً بالحل المناسب.";
-                }
-                
-                chat.appendChild(aiMsg);
-                chat.scrollTop = chat.scrollHeight;
-            }, 1000);
-
-            input.value = "";
-            chat.scrollTop = chat.scrollHeight;
-        }
-    </script>
-</body>
-</html>
