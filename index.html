@@ -296,3 +296,68 @@
                 <div class="chat-container" id="chat">
                     <div class="msg ai">مرحباً بك في نظام بصيرة الذكي. كيف يمكنني مساعدتك أكاديمياً اليوم؟</div>
                 </div>
+                <div class="input-group">
+                    <input type="text" id="user-input" placeholder="اكتب مشكلتك هنا (مثال: لم أفهم درس المصفوفات)...">
+                    <button onclick="sendMessage()">إرسال</button>
+                </div>
+            </div>
+
+            <div class="student-list">
+                <div class="ticket-header">🚨 تنبيهات الأداء</div>
+                <div class="student-item">
+                    <div class="avatar">أع</div>
+                    <div>
+                        <div style="font-weight: 600;">أحمد علي</div>
+                        <div style="font-size: 12px; color: var(--text-secondary);">هبوط في الرياضيات</div>
+                    </div>
+                    <div class="badge">خطر تعثر</div>
+                </div>
+                <div class="student-item">
+                    <div class="avatar">س م</div>
+                    <div>
+                        <div style="font-weight: 600;">سارة محمد</div>
+                        <div style="font-size: 12px; color: var(--text-secondary);">غياب متكرر</div>
+                    </div>
+                    <div class="badge">تنبيه</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function sendMessage() {
+            const input = document.getElementById('user-input');
+            const chat = document.getElementById('chat');
+            
+            if (input.value.trim() === "") return;
+
+            // User Message
+            const userMsg = document.createElement('div');
+            userMsg.className = 'msg user';
+            userMsg.innerText = input.value;
+            chat.appendChild(userMsg);
+
+            // AI Logic (Simulation of your idea)
+            setTimeout(() => {
+                const aiMsg = document.createElement('div');
+                aiMsg.className = 'msg ai';
+                
+                const text = input.value.toLowerCase();
+                if (text.includes("فهمت") || text.includes("صعب")) {
+                    aiMsg.innerText = "فهمت مشكلتك. تم تحليل مستوى الصعوبة، سأقوم بإنشاء خطة دعم مبسطة لهذا الدرس الآن.";
+                } else if (text.length < 5) {
+                    aiMsg.innerText = "عذراً، لم يتم فهم المصطلح المذكور بشكل كامل. هل يمكنك توضيح المشكلة أكثر لمساعدتك؟";
+                } else {
+                    aiMsg.innerText = "تذكرة ذكية مفتوحة: جاري تحليل استفسارك وسيتم الرد عليك فوراً بالحل المناسب.";
+                }
+                
+                chat.appendChild(aiMsg);
+                chat.scrollTop = chat.scrollHeight;
+            }, 1000);
+
+            input.value = "";
+            chat.scrollTop = chat.scrollHeight;
+        }
+    </script>
+</body>
+</html>
