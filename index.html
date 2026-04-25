@@ -246,3 +246,62 @@
                     <div class="avatar">عع</div>
                     <div>
                         <p style="font-weight: 700; font-size: 14px;">عمار عايض</p>
+                        <p style="font-size: 12px; color: var(--text-sub)">السبب: إزعاج متكرر بالصف</p>
+                    </div>
+                    <span class="tag red">سلوكي</span>
+                </div>
+
+                <div class="student-card">
+                    <div class="avatar">س م</div>
+                    <div>
+                        <p style="font-weight: 700; font-size: 14px;">سارة محمد</p>
+                        <p style="font-size: 12px; color: var(--text-sub)">السبب: انخفاض مفاجئ في الرياضيات</p>
+                    </div>
+                    <span class="tag orange">أكاديمي</span>
+                </div>
+
+                <div class="student-card" style="opacity: 0.6">
+                    <div class="avatar">ف خ</div>
+                    <div>
+                        <p style="font-weight: 700; font-size: 14px;">فهد خالد</p>
+                        <p style="font-size: 12px; color: var(--text-sub)">الحالة: تذكرة مغلقة بنجاح</p>
+                    </div>
+                    <span class="tag" style="background: #ECFDF5; color: #059669;">مكتمل</span>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        function sendMsg() {
+            const input = document.getElementById('chat-input');
+            const chat = document.getElementById('chat');
+            if(!input.value.trim()) return;
+
+            const uDiv = document.createElement('div');
+            uDiv.className = 'bubble user';
+            uDiv.innerText = input.value;
+            chat.appendChild(uDiv);
+
+            setTimeout(() => {
+                const aDiv = document.createElement('div');
+                aDiv.className = 'bubble ai';
+                
+                // ردود ذكية مخصصة
+                const val = input.value;
+                if(val.includes("عمار") || val.includes("ازعاج")) {
+                    aDiv.innerText = "تم توثيق الملاحظة. نظام بصيرة يقترح توجيه رسالة توعوية لولي الأمر عايض ال وقيتان لزيادة التعاون البيت والمدرسة.";
+                } else {
+                    aDiv.innerText = "تم إرسال ردك بنجاح إلى ولي الأمر عبر تطبيق بصيرة.";
+                }
+                
+                chat.appendChild(aDiv);
+                chat.scrollTop = chat.scrollHeight;
+            }, 800);
+
+            input.value = "";
+            chat.scrollTop = chat.scrollHeight;
+        }
+    </script>
+</body>
+</html>
