@@ -79,3 +79,32 @@
                 title.innerText = "وزارة التعليم - مركز التحليلات";
                 role.innerText = "صلاحية كاملة (مشرف نظام)";
                 area.
+                    innerHTML = <div class="card"><h3>مؤشر الأداء الدراسي العام</h3><canvas id="myChart" style="max-height:300px;"></canvas></div>;
+                renderChart();
+            } else if (user === 'هيا') {
+                title.innerText = "الأستاذة هيا الغامدي";
+                role.innerText = "مديرة المدرسة";
+                area.innerHTML = <div class="card"><h3>تقييم المعلمات</h3><table><tr><th>المعلمة</th><th>المادة</th><th>التقييم</th></tr><tr><td>موضي</td><td>شريعة</td><td>96%</td></tr><tr><td>صالحة</td><td>لغتي</td><td>82% (تذكرة اعتراض)</td></tr></table></div>;
+            } else if (user === 'عايض') {
+                title.innerText = "ولي الأمر: عايض ال وقيتان";
+                role.innerText = "متابعة الطالب: عمار";
+                area.innerHTML = <div class="card"><h3>حالة الطالب عمار</h3><p>السلوك: <span class="badge">إزعاج سلوكي</span></p><p>النقاط: 88/100</p></div>;
+            } else {
+                title.innerText = "مرحباً: " + user;
+                area.innerHTML = <div class="card"><h3>لوحة المعلومات العامة</h3><p>أهلاً بك في نظام بصيرة المدرسي.</p></div>;
+            }
+        }
+
+        function renderChart() {
+            const ctx = document.getElementById('myChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['الرياضيات', 'العلوم', 'الحاسب', 'لغتي'],
+                    datasets: [{ label: 'نسبة الإنجاز', data: [85, 90, 98, 75], backgroundColor: '#4f46e5' }]
+                }
+            });
+        }
+    </script>
+</body>
+</html>
