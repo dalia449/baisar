@@ -1,1 +1,69 @@
-https://github.com/dalia449/baisra/blob/8f63e41d858269fc5bde5a7bc9223f019af55795/index.html
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة بصيرة | المنظومة التعليمية المتكاملة 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root { --primary: #6366F1; --bg: #F8FAFC; --text: #1E293B; --danger: #EF4444; --success: #10B981; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Noto Sans Arabic', sans-serif; }
+        body { background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; }
+
+        /* شاشة تسجيل الدخول المحدثة بالشعار */
+        #login-page { 
+            position: fixed; inset: 0; 
+            background: linear-gradient(rgba(99, 102, 241, 0.8), rgba(67, 56, 202, 0.9)), url('https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=2000');
+            background-size: cover; display: flex; align-items: center; justify-content: center; z-index: 9999; 
+        }
+        .login-card { background: white; padding: 40px; border-radius: 35px; width: 450px; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.3); }
+        
+        /* تنسيق صورة الشعار */
+        .logo-img { width: 120px; height: auto; margin-bottom: 20px; border-radius: 15px; }
+
+        .login-input { width: 100%; padding: 15px; margin: 10px 0; border-radius: 12px; border: 2px solid #E2E8F0; text-align: center; font-size: 16px; }
+        .login-btn { width: 100%; padding: 15px; border-radius: 12px; border: none; background: var(--primary); color: white; font-weight: 700; cursor: pointer; font-size: 18px; }
+
+        /* النظام الأساسي */
+        #main-system { display: none; height: 100vh; flex-direction: row; }
+        nav { width: 280px; background: white; border-left: 1px solid #E2E8F0; padding: 25px; display: flex; flex-direction: column; }
+        main { flex: 1; padding: 30px; overflow-y: auto; background: #F1F5F9; }
+        .section { background: white; padding: 25px; border-radius: 24px; border: 1px solid #E2E8F0; margin-bottom: 20px; }
+        .nav-link { width: 100%; padding: 12px; margin: 5px 0; border: none; border-radius: 10px; text-align: right; cursor: pointer; background: none; font-weight: 600; color: #64748B; }
+        .nav-link.active { background: var(--primary); color: white; }
+        .badge { padding: 4px 10px; border-radius: 8px; font-size: 12px; font-weight: 700; }
+        .bg-red { background: #FEE2E2; color: #EF4444; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { text-align: right; padding: 12px; border-bottom: 1px solid #F1F5F9; }
+    </style>
+</head>
+<body>
+
+    <div id="login-page">
+        <div class="login-card">
+            <img src="logo.png" alt="Basira Logo" class="logo-img">
+            
+            <h1>منصة بصيرة</h1>
+            <p style="color:#64748B; margin-bottom: 20px;">نظام الإدارة المدرسية الذكي</p>
+            
+            <input type="text" id="username" class="login-input" placeholder="اسم المستخدم (مثال: هيا، عمار، وزارة)">
+            <input type="password" class="login-input" placeholder="كلمة المرور">
+            <button onclick="handleLogin()" class="login-btn">دخول للنظام</button>
+        </div>
+    </div>
+
+    <div id="main-system">
+        <nav>
+            <div id="user-header" style="margin-bottom: 30px; padding: 15px; background: #F8FAFC; border-radius: 20px; border: 1px solid #E2E8F0;"></div>
+            <div id="menu-items"></div>
+            <button onclick="location.reload()" class="nav-link" style="color: var(--danger); margin-top: auto;">🚪 خروج</button>
+        </nav>
+        <main id="content-area"></main>
+    </div>
+
+    <script>
+        const appData = {
+            students: [
+                { name: 'عمار عايض', parent: 'عايض ال وقيتان', alert: 'إزعاج سلوكي', points: 88, health: 'سليم', transport: 'منتظم' },
+              
