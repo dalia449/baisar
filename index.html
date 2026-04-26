@@ -129,3 +129,30 @@
                         <tr><td>عمار</td><td>88</td><td><button class="action-btn">+ نقطة</button></td></tr>
                         </table></div>
                     <div class="card"><h3>تقييم الأداء</h3>
+                    <p>درجتك الحالية: <b>${user === 'موضي' ? '96%' : '82%'}</b></p>
+                        ${user === 'صالحة' ? '<button class="action-btn" style="background:red">اعتراض</button>' : ''}</div>
+                `;
+            }
+            // --- لوحة الطالب (عمار) ---
+            else {
+                nameTxt.innerText = "الطالب: " + user;
+                roleTxt.innerText = "المستوى التعليمي";
+                display.innerHTML = `
+                    <div class="card"><h3>تحصيلي الدراسي</h3><p>التقدم: 92%</p><canvas id="progChart" height="150"></canvas></div>
+                    <div class="card"><h3>النقاط والتحفيز</h3><h2 style="color:green">88 نقطة</h2></div>
+                    <div class="card"><h3>التنبيهات</h3><p class="badge bg-red">تنبيه سلوكي (إزعاج)</p></div>
+                `;
+            }
+        }
+
+        function initChart() {
+            const ctx = document.getElementById('schoolChart').getContext('2d');
+            new Chart(ctx, { type: 'line', data: { labels: ['و1', 'و2', 'و3'], datasets: [{ label: 'تقدم المدرسة', data: [70, 85, 92], borderColor: '#6366f1' }] } });
+        }
+        function initAlertChart() {
+            const ctx = document.getElementById('alertChart').getContext('2d');
+            new Chart(ctx, { type: 'doughnut', data: { labels: ['سلوك', 'غياب'], datasets: [{ data: [30, 70], backgroundColor: ['#ef4444', '#6366f1'] }] } });
+        }
+    </script>
+</body>
+</html>
