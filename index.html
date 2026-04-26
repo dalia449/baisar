@@ -67,3 +67,65 @@
         function buildDashboard(user) {
             const display = document.getElementById('dashboard-content');
             const nameTxt = document.getElementById('userNameDisplay');
+            const roleTxt = document.getElementById('userRoleDisplay');
+
+            // --- لوحة تحكم المرشد الطلابي (داليا) ---
+            if (user === "داليا") {
+                nameTxt.innerText = "أ. داليا (المرشدة الطلابية)";
+                roleTxt.innerText = "التوجيه والإرشاد - الشراكة المجتمعية";
+                display.innerHTML = `
+                    <div class="card"><h3>الحالات الصحية والاجتماعية</h3>
+                        <table><tr><th>الطالب</th><th>الحالة</th><th>إجراء</th></tr>
+                        <tr><td>عمار عايض</td><td><span class="badge bg-orange">متابعة صحية</span></td><td><button class="action-btn">تحديث</button></td></tr>
+                        <tr><td>سارة محمد</td><td><span class="badge bg-red">ضعف تحصيل</span></td><td><button class="action-btn">جلسة</button></td></tr>
+                        </table></div>
+                    <div class="card"><h3>الشراكة المجتمعية والكوبونات</h3>
+                        <p>كوبونات التميز المتاحة: <b>15</b></p>
+                        <button class="action-btn">صرف كوبون لطالب متميز</button>
+                        <button class="action-btn">إضافة شريك جديد</button></div>
+                    <div class="card"><h3>تنبيهات الغياب والتأخر</h3>
+                        <p>تنبيه لولي أمر: <b>ود ساعد</b> (تأخر صباحي متكرر)</p>
+                        <button class="action-btn">اتصال بولي الأمر</button></div>
+                `;
+            }
+            // --- لوحة تحكم المديرة (هيا) ---
+            else if (user === "هيا") {
+                nameTxt.innerText = "أ. هيا الغامدي";
+                roleTxt.innerText = "مديرة المدرسة";
+                display.innerHTML = `
+                    <div class="card"><h3>الأداء الوظيفي للمعلمات</h3>
+                        <table><tr><th>المعلمة</th><th>التقييم</th><th>إجراء</th></tr>
+                        <tr><td>موضي ال فايز</td><td><input type="number" value="96" style="width:50px"></td><td><button class="action-btn">حفظ</button></td></tr>
+                        <tr><td>صالحة</td><td><input type="number" value="82" style="width:50px"></td><td><button class="action-btn">حفظ</button></td></tr>
+                        </table></div>
+                    <div class="card"><h3>تقدم المدرسة</h3><canvas id="schoolChart"></canvas></div>
+                    <div class="card"><h3>إدارة الموارد البشرية</h3>
+                        <button class="action-btn">السائقين</button> <button class="action-btn">الإداريين</button>
+                        <button class="action-btn">المرشد</button> <button class="action-btn">المعلمين</button></div>
+                    <div class="card"><h3>تذاكر أولياء الأمور والاعتراضات</h3>
+                        <p>⚠️ اعتراض أداء (صالحة)</p><p>📧 تذكرة شكوى (ولي أمر عمار)</p></div>
+                `;
+                initChart();
+            }
+            // --- لوحة تحكم الوكيل (البندري) ---
+            else if (user === "البندري") {
+                nameTxt.innerText = "أ. البندري";
+                roleTxt.innerText = "وكيلة الشؤون الطلابية";
+                display.innerHTML = `
+                    <div class="card"><h3>تذاكر الشكاوي المعلقة</h3>
+                        <p>⚠️ تذكرة سلوكية: الطالب عمار</p>
+                        <button class="action-btn">اعتماد للمديرة</button> <button class="action-btn">رفض</button></div>
+                    <div class="card"><h3>نسبة التنبيهات</h3><canvas id="alertChart"></canvas></div>
+                `;
+                initAlertChart();
+            }
+            // --- لوحة تحكم المعلم (موضي/صالحة) ---
+            else if (user === "موضي" || user === "صالحة") {
+                nameTxt.innerText = "الأستاذة " + user;
+                roleTxt.innerText = "كادر تعليمي";
+                display.innerHTML = `
+                    <div class="card"><h3>صفوفي وطلابي</h3>
+                        <table><tr><th>الطالب</th><th>النقاط</th><th>إجراء</th></tr>
+                        <tr><td>عمار</td><td>88</td><td><button class="action-btn">+ نقطة</button></td></tr>
+                        </table></div>
+                    <div class="card"><h3>تقييم الأداء</h3>
