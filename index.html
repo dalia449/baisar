@@ -1,158 +1,68 @@
-<!DOCTYPE html>
+‏<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة بصيرة التعليمية الذكية</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;700;900&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        :root { --primary: #6366f1; --bg: #f8fafc; --white: #ffffff; --text: #1e293b; --danger: #ef4444; --success: #10b981; --warning: #f59e0b; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Noto Sans Arabic', sans-serif; }
-        body { background-color: var(--bg); color: var(--text); }
-        
-        #login-screen { position: fixed; inset: 0; background: var(--white); display: flex; align-items: center; justify-content: center; z-index: 1000; }
-        .login-card { width: 90%; max-width: 400px; text-align: center; }
-        .logo { width: 220px; margin-bottom: 20px; }
-        input { width: 100%; padding: 15px; border-radius: 12px; border: 2px solid #e2e8f0; text-align: center; font-size: 16px; margin-bottom: 15px; outline: none; }
-        .btn-login { width: 100%; padding: 15px; border-radius: 12px; border: none; background: var(--primary); color: white; font-size: 18px; font-weight: bold; cursor: pointer; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Basira</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+:root{
+--primary:#4F46E5;
+--bg:#F1F5F9;
+--card:#ffffff;
+--text:#0F172A;
+--sub:#64748B;
+--danger:#EF4444;
+--success:#22C55E;
+}
 
-        #main-system { display: none; padding: 20px; }
-        .header { background: var(--white); padding: 20px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
-        .card { background: var(--white); padding: 20px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #f1f5f9; }
-        h3 { margin-bottom: 15px; color: var(--primary); border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; font-size: 18px; }
-        
-        table { width: 100%; border-collapse: collapse; }
-        th, td { text-align: right; padding: 10px; border-bottom: 1px solid #f1f5f9; font-size: 14px; }
-        .badge { padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; }
-        .bg-red { background: #fee2e2; color: #ef4444; }
-        .bg-orange { background: #fff7ed; color: #ea580c; }
-        .action-btn { padding: 6px 12px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 12px; margin: 2px; }
-    </style>
+body{margin:0;font-family:'Cairo';background:var(--bg)}
+
+/* LOGIN */
+.login{
+display:flex;align-items:center;justify-content:center;height:100vh;
+}
+.card{
+background:var(--card);
+padding:30px;
+border-radius:20px;
+width:360px;
+text-align:center;
+box-shadow:0 10px 30px rgba(0,0,0,0.05);
+}
+.logo{width:120px;margin-bottom:10px}
+input{
+width:100%;padding:12px;margin:6px 0;border-radius:12px;border:1px solid #e2e8f0;
+}
+button{
+width:100%;padding:12px;margin-top:8px;border:none;border-radius:12px;background:var(--primary);color:#fff;font-weight:bold;cursor:pointer;
+}
+
+/* DASHBOARD */
+.dashboard{padding:20px}
+.header{
+display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;
+}
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:15px;
+}
+.box{
+background:var(--card);
+padding:15px;
+border-radius:18px;
+box-shadow:0 4px 15px rgba(0,0,0,0.04);
+}
+h3{margin-bottom:10px;color:var(--primary)}
+.small-btn{
+padding:6px 10px;border:none;border-radius:8px;background:var(--primary);color:#fff;cursor:pointer;font-size:12px;
+}
+.tag-danger{color:var(--danger)}
+.tag-success{color:var(--success)}
+.link{cursor:pointer;color:var(--primary)}
+</style>
 </head>
 <body>
-
-    <div id="login-screen">
-        <div class="login-card">
-            <img src="logo.png.PNG" class="logo" alt="بصيرة">
-            <h1>منصة بصيرة</h1>
-            <p style="margin-bottom: 25px; color: #64748b;">نظام الإدارة المدرسية الشامل</p>
-            <input type="text" id="username" placeholder="اسم المستخدم">
-            <input type="password" placeholder="كلمة المرور">
-            <button class="btn-login" onclick="login()">دخول</button>
-        </div>
-    </div>
-
-    <div id="main-system">
-        <div class="header">
-            <div>
-                <h2 id="userNameDisplay">مرحباً</h2>
-                <p id="userRoleDisplay"></p>
-            </div>
-            <button onclick="location.reload()" style="background:var(--danger); color:white; border:none; padding:8px 15px; border-radius:10px; cursor:pointer;">خروج</button>
-        </div>
-        <div id="dashboard-content" class="grid-container"></div>
-    </div>
-
-    <script>
-        function login() {
-            const user = document.getElementById('username').value.trim();
-            if (!user) return;
-            document.getElementById('login-screen').style.display = 'none';
-            document.getElementById('main-system').style.display = 'block';
-            buildDashboard(user);
-        }
-
-        function buildDashboard(user) {
-            const display = document.getElementById('dashboard-content');
-            const nameTxt = document.getElementById('userNameDisplay');
-            const roleTxt = document.getElementById('userRoleDisplay');
-
-            // --- لوحة تحكم المرشد الطلابي (داليا) ---
-            if (user === "داليا") {
-                nameTxt.innerText = "أ. داليا (المرشدة الطلابية)";
-                roleTxt.innerText = "التوجيه والإرشاد - الشراكة المجتمعية";
-                display.innerHTML = `
-                    <div class="card"><h3>الحالات الصحية والاجتماعية</h3>
-                        <table><tr><th>الطالب</th><th>الحالة</th><th>إجراء</th></tr>
-                        <tr><td>عمار عايض</td><td><span class="badge bg-orange">متابعة صحية</span></td><td><button class="action-btn">تحديث</button></td></tr>
-                        <tr><td>سارة محمد</td><td><span class="badge bg-red">ضعف تحصيل</span></td><td><button class="action-btn">جلسة</button></td></tr>
-                        </table></div>
-                    <div class="card"><h3>الشراكة المجتمعية والكوبونات</h3>
-                        <p>كوبونات التميز المتاحة: <b>15</b></p>
-                        <button class="action-btn">صرف كوبون لطالب متميز</button>
-                        <button class="action-btn">إضافة شريك جديد</button></div>
-                    <div class="card"><h3>تنبيهات الغياب والتأخر</h3>
-                        <p>تنبيه لولي أمر: <b>ود ساعد</b> (تأخر صباحي متكرر)</p>
-                        <button class="action-btn">اتصال بولي الأمر</button></div>
-                `;
-            }
-            // --- لوحة تحكم المديرة (هيا) ---
-            else if (user === "هيا") {
-                nameTxt.innerText = "أ. هيا الغامدي";
-                roleTxt.innerText = "مديرة المدرسة";
-                display.innerHTML = `
-                    <div class="card"><h3>الأداء الوظيفي للمعلمات</h3>
-                        <table><tr><th>المعلمة</th><th>التقييم</th><th>إجراء</th></tr>
-                        <tr><td>موضي ال فايز</td><td><input type="number" value="96" style="width:50px"></td><td><button class="action-btn">حفظ</button></td></tr>
-                        <tr><td>صالحة</td><td><input type="number" value="82" style="width:50px"></td><td><button class="action-btn">حفظ</button></td></tr>
-                        </table></div>
-                    <div class="card"><h3>تقدم المدرسة</h3><canvas id="schoolChart"></canvas></div>
-                    <div class="card"><h3>إدارة الموارد البشرية</h3>
-                        <button class="action-btn">السائقين</button> <button class="action-btn">الإداريين</button>
-                        <button class="action-btn">المرشد</button> <button class="action-btn">المعلمين</button></div>
-                    <div class="card"><h3>تذاكر أولياء الأمور والاعتراضات</h3>
-                        <p>⚠️ اعتراض أداء (صالحة)</p><p>📧 تذكرة شكوى (ولي أمر عمار)</p></div>
-                `;
-                initChart();
-            }
-            // --- لوحة تحكم الوكيل (البندري) ---
-            else if (user === "البندري") {
-                nameTxt.innerText = "أ. البندري";
-                roleTxt.innerText = "وكيلة الشؤون الطلابية";
-                display.innerHTML = `
-                    <div class="card"><h3>تذاكر الشكاوي المعلقة</h3>
-                        <p>⚠️ تذكرة سلوكية: الطالب عمار</p>
-                        <button class="action-btn">اعتماد للمديرة</button> <button class="action-btn">رفض</button></div>
-                    <div class="card"><h3>نسبة التنبيهات</h3><canvas id="alertChart"></canvas></div>
-                `;
-                initAlertChart();
-            }
-            // --- لوحة تحكم المعلم (موضي/صالحة) ---
-            else if (user === "موضي" || user === "صالحة") {
-                nameTxt.innerText = "الأستاذة " + user;
-                roleTxt.innerText = "كادر تعليمي";
-                display.innerHTML = `
-                    <div class="card"><h3>صفوفي وطلابي</h3>
-                        <table><tr><th>الطالب</th><th>النقاط</th><th>إجراء</th></tr>
-                        <tr><td>عمار</td><td>88</td><td><button class="action-btn">+ نقطة</button></td></tr>
-                        </table></div>
-                    <div class="card"><h3>تقييم الأداء</h3>
-                    <p>درجتك الحالية: <b>${user === 'موضي' ? '96%' : '82%'}</b></p>
-                        ${user === 'صالحة' ? '<button class="action-btn" style="background:red">اعتراض</button>' : ''}</div>
-                `;
-            }
-            // --- لوحة الطالب (عمار) ---
-            else {
-                nameTxt.innerText = "الطالب: " + user;
-                roleTxt.innerText = "المستوى التعليمي";
-                display.innerHTML = `
-                    <div class="card"><h3>تحصيلي الدراسي</h3><p>التقدم: 92%</p><canvas id="progChart" height="150"></canvas></div>
-                    <div class="card"><h3>النقاط والتحفيز</h3><h2 style="color:green">88 نقطة</h2></div>
-                    <div class="card"><h3>التنبيهات</h3><p class="badge bg-red">تنبيه سلوكي (إزعاج)</p></div>
-                `;
-            }
-        }
-
-        function initChart() {
-            const ctx = document.getElementById('schoolChart').getContext('2d');
-            new Chart(ctx, { type: 'line', data: { labels: ['و1', 'و2', 'و3'], datasets: [{ label: 'تقدم المدرسة', data: [70, 85, 92], borderColor: '#6366f1' }] } });
-        }
-        function initAlertChart() {
-            const ctx = document.getElementById('alertChart').getContext('2d');
-            new Chart(ctx, { type: 'doughnut', data: { labels: ['سلوك', 'غياب'], datasets: [{ data: [30, 70], backgroundColor: ['#ef4444', '#6366f1'] }] } });
-        }
-    </script>
-</body>
-</html>
+<div id="app"></div>
