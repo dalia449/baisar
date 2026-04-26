@@ -81,3 +81,113 @@ function buildAdmin() {
         <div class="box">
             <h3>📊 أداء المدرسة</h3>
             <canvas id="mainChart"></canvas>
+</div>
+        <div class="box">
+            <h3>👩‍🏫 الأداء الوظيفي (المعلمات)</h3>
+            <table>
+                <tr><th>المعلمة</th><th>الدرجة</th><th>حفظ</th></tr>
+                ${teachers.map(t => `<tr><td>${t.name}</td><td><input type="number" value="${t.score}" style="width:50px"></td><td><button class="btn-sm">تعديل</button></td></tr>`).join('')}
+            </table>
+        </div>
+        <div class="box">
+            <h3>📩 تذاكر واعتراضات</h3>
+            <p>• اعتراض من أ. صالحة (التقييم)</p>
+            <p>• تذكرة ولي أمر عمار (سلوك)</p>
+        </div>
+        <div class="box">
+            <h3>👥 القوى البشرية</h3>
+            <div style="display:flex; gap:5px; flex-wrap:wrap">
+                <button class="btn-sm">سائقين</button><button class="btn-sm">إداريين</button><button class="btn-sm">طلاب</button>
+            </div>
+        </div>
+    `);
+    new Chart(document.getElementById('mainChart'), { type: 'line', data: { labels: ['أ1','أ2','أ3'], datasets:[{label:'تقدم المدرسة', data:[60,85,95], borderColor:'#4F46E5'}] } });
+}
+
+/* 2. لوحة الوكيل (البندري) */
+function buildWakil() {
+    renderLayout("لوحة الوكيل", "شؤون الطلاب", `
+        <div class="box">
+            <h3>⚠️ تذاكر الشكاوي</h3>
+            <p>الطالب: عمار عايض - إزعاج</p>
+            <button class="btn-sm" style="background:orange">تأكيد</button>
+            <button class="btn-sm">اعتماد للمديرة</button>
+        </div>
+        <div class="box">
+            <h3>📉 نسب التنبيهات</h3>
+            <canvas id="wakilChart"></canvas>
+        </div>
+    `);
+    new Chart(document.getElementById('wakilChart'), { type: 'pie', data: { labels: ['سلوك', 'غياب'], datasets:[{data:[30,70], backgroundColor:['#EF4444','#4F46E5']}] } });
+}
+
+/* 3. لوحة المرشد (داليا) */
+function buildMurshid() {
+    renderLayout("لوحة المرشد", "التوجيه الطلابي", `
+        <div class="box">
+            <h3>🤝 الشراكة المجتمعية</h3>
+            <p>كوبونات المتاجر المتاحة: 12</p>
+            <button class="btn-sm">صرف كوبون تحفيزي</button>
+        </div>
+        <div class="box">
+            <h3>🏥 الحالات الصحية</h3>
+            <p>عمار عايض: متابعة (تطبيق صحتي)</p>
+        </div>
+    `);
+}
+
+/* 4. لوحة المعلم (صالحة/موضي) */
+function buildTeacher(name) {
+    renderLayout("لوحة المعلم", "أستاذة " + name, `
+        <div class="box">
+            <h3>📚 فصولي</h3>
+            <button class="btn-sm">1/1</button> <button class="btn-sm">2/3</button>
+        </div>
+        <div class="box">
+            <h3>✍️ رصد نقاط للطلاب</h3>
+            <table>
+                <tr><th>الطالب</th><th>النقاط</th><th>إضافة</th></tr>
+                <tr><td>عمار عايض</td><td>88</td><td><button class="btn-sm">+</button></td></tr>
+            </table>
+        </div>
+        <div class="box">
+            <h3>📈 أداء وظيفي</h3>
+            <p>درجتك من المديرة: ${name === 'صالحة' ? '82' : '96'}</p>
+            ${name === 'صالحة' ? '<button class="btn-sm" style="background:red">تقديم تذكرة اعتراض</button>' : ''}
+        </div>
+    `);
+}
+
+/* 5. لوحة الطالب (عمار) */
+function buildStudent(name) {
+    renderLayout("لوحة الطالب", name, `
+        <div class="box">
+            <h3>⭐ نقاطي المكافأة</h3>
+            <h1 style="color:var(--success); text-align:center">88</h1>
+        </div>
+        <div class="box">
+            <h3>📅 الحضور والتقدم</h3>
+            <p>نسبة الحضور: 98%</p>
+            <p>نسبة التقدم: 92%</p>
+        </div>
+        <div class="box">
+            <h3>🔔 تنبيهات</h3>
+            <p class="badge red">تنبيه سلوكي: إزعاج في حصة لغتي</p>
+        </div>
+    `);
+}
+
+/* وظيفة بناء الهيكل العام */
+function renderLayout(title, sub, content) {
+    document.getElementById('app').innerHTML = `
+        <div class="container">
+            <div class="header">
+                <div><h1>${title}</h1><p style="color:#64748B">${sub}</p></div>
+                <button class="btn-sm" style="background:var(--danger)" onclick="showLogin()">خروج</button>
+            </div>
+            <div class="grid">${content}</div>
+        </div>`;
+}
+
+// البدء عند تحميل الصفحة
+window.onload = showLogin;
