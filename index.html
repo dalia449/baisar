@@ -143,3 +143,49 @@
         }
 
         badge.innerText = cfg.label; badge.style.backgroundColor = cfg.
+color;
+        document.getElementById('ai-text').innerText = cfg.ai;
+        
+        // إنشاء الأزرار
+        menu.innerHTML = cfg.btns.map((b, i) => `<div class="nav-link ${i===0?'active':''}" onclick="changePage('${b}', this)">${b}</div>`).join('');
+        
+        // إنشاء الكروت
+        document.getElementById('stats-area').innerHTML = cfg.stats.map(s => `
+            <div class="stat-card" style="border-color:${cfg.color}"><h4>${s[0]}</h4><h2>${s[1]}</h2></div>
+        `).join('');
+
+        initChart(cfg.chart, cfg.color);
+    }
+
+    function changePage(name, el) {
+        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+        el.classList.add('active');
+        
+        const dash = document.getElementById('view-dashboard');
+        const det = document.getElementById('view-details');
+        const title = document.getElementById('details-title');
+        const content = document.getElementById('details-content');
+
+        if (name === 'الرئيسية') {
+            dash.classList.add('active'); det.classList.remove('active');
+        } else {
+            dash.classList.remove('active'); det.classList.add('active');
+            title.innerText = "قسم " + name;
+            content.innerHTML = `<table><tr><th>الاسم</th><th>الحالة</th><th>التحديث</th></tr>
+                                <tr><td>بيانات 1</td><td>نشط</td><td>اليوم</td></tr>
+                                <tr><td>بيانات 2</td><td>قيد المعالجة</td><td>منذ ساعة</td></tr></table>`;
+        }
+    }
+
+    function initChart(data, color) {
+        const ctx = document.getElementById('mainChart').getContext('2d');
+        if (myChart) myChart.destroy();
+        myChart = new Chart(ctx, {
+            type: 'line',
+            data: { labels: ['أسبوع 1', 'أسبوع 2', 'أسبوع 3', 'أسبوع 4'], datasets: [{ data: data, borderColor: color, fill: true, backgroundColor: color+'1A', tension: 0.4 }] },
+            options: { plugins: { legend: { display: false } } }
+        });
+    }
+</script>
+</body>
+</html>
