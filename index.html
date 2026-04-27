@@ -49,4 +49,81 @@
 
         .dashboard-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 25px; margin-bottom: 30px; }
         .card { background: var(--white); padding: 25px; border-radius: 25px; box-shadow: var(--shadow); }
-        .
+        .card h3 { font-weight: 900; margin-bottom: 20px; font-size: 18px; border-right: 5px solid var(--main-purple); padding-right: 12px; color: var(--text-dark); }
+
+        /* مكونات خاصة */
+        .badge { padding: 6px 12px; border-radius: 10px; font-size: 12px; font-weight: bold; }
+        .bg-red { background: #fee2e2; color: var(--danger); }
+        .bg-green { background: #dcfce7; color: var(--success); }
+        .btn-ai { background: var(--gradient-purple); color: white; border: none; padding: 12px; border-radius: 50px; width: 100%; cursor: pointer; font-weight: bold; margin-top: 15px; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4); }
+        
+        table { width: 100%; border-collapse: collapse; }
+        th, td { text-align: right; padding: 15px; border-bottom: 1px solid #f1f5f9; font-size: 14px; }
+        
+        /* دائرة التقدم (Student Progress) */
+        .progress-circle { width: 100px; height: 100px; border-radius: 50%; border: 8px solid #f1f5f9; border-top-color: var(--main-purple); display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 900; margin: 0 auto 15px; }
+    </style>
+</head>
+<body>
+
+    <div id="login-overlay">
+        <div class="login-box">
+            <img src="logo.png.PNG" onerror="this.src='https://via.placeholder.com/150x60?text=BASIRA'">
+            <h1 style="color: var(--main-purple); font-weight: 900; margin-bottom: 10px;">بصيرة</h1>
+            <p style="color: #64748b; font-size: 14px; margin-bottom: 20px;">النظام التعليمي الذكي الشامل</p>
+            <input type="text" id="userInput" placeholder="أدخلي اسمك (وزارة، هيا، داليا، عمار...)">
+            <button class="btn-go" onclick="appLogin()">دخول للنظام</button>
+        </div>
+    </div>
+
+    <div id="sidebar" class="sidebar" style="display: none;">
+        <h2>بصيرة</h2>
+        <div id="dynamic-menu"></div>
+        <div class="nav-link" style="margin-top: auto;" onclick="location.reload()">🚪 خروج</div>
+    </div>
+
+    <div id="main-app" class="main-wrapper" style="display: none;">
+        <div class="header">
+            <input type="text" class="search-bar" placeholder="بحث عن طالب، معلمة، أو تقرير...">
+            <div class="user-profile">
+                <span id="header-user-name">هيا</span>
+                <div class="user-img"></div>
+                <span style="cursor: pointer; position: relative;">🔔<small style="position:absolute; top:-5px; right:-5px; background:red; color:white; border-radius:50%; padding:2px 5px; font-size:9px;">3</small></span>
+            </div>
+        </div>
+
+        <div class="content">
+            <div id="stats-area" class="grid-stats"></div>
+
+            <div class="dashboard-grid">
+                <div id="primary-content" class="card">
+                    <h3 id="primary-title">الأداء العام</h3>
+                    <canvas id="mainChart"></canvas>
+                </div>
+
+                <div class="side-column">
+                    <div class="card" style="margin-bottom: 20px;">
+                        <h3>🚨 التنبيهات</h3>
+                        <div id="alert-list"></div>
+                    </div>
+                    <div class="card">
+                        <h3>🤖 مساعد بصيرة (AI)</h3>
+                        <p id="ai-text" style="font-size: 13px; color: #64748b; line-height: 1.6;">بناءً على تحليلي، يحتاج طلاب الصف الثاني لدعم إضافي في وحدة الكسور.</p>
+                        <button class="btn-ai" onclick="askAI()">اسأل AI</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="secondary-content" class="grid-stats" style="grid-template-columns: 1fr 1fr; height: auto;"></div>
+        </div>
+    </div>
+
+<script>
+    function appLogin() {
+        const user = document.getElementById('userInput').value.trim();
+        if(!user) return;
+        
+        document.getElementById('login-overlay').style.display = 'none';
+        document.getElementById('sidebar').style.display = 'flex';
+        document.getElementById('main-app').style.display = 'flex';
+        document.getElementById('header-user-name').
