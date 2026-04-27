@@ -64,3 +64,76 @@
 
     <div id="main-app" class="main-wrapper">
         <div class="header">
+<div style="font-weight: 900;">مرحباً، <span id="user-display"></span> 👋 <br> <small id="school-name" style="color:var(--primary)"></small></div>
+            <div id="role-tag" style="padding:5px 15px; border-radius:20px; color:white; font-size:12px;"></div>
+        </div>
+
+        <div class="content">
+            <div id="stats-grid" class="grid-stats"></div>
+
+            <div class="display-view">
+                <h3 id="view-title">لوحة البيانات الموحدة</h3>
+                <div id="dynamic-content"></div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    const db = {
+        "وزارة": {
+            role: "وزارة التعليم", color: "var(--ministry)", school: "المملكة العربية السعودية",
+            menu: ["الرئيسية", "مدارس المملكة"],
+            stats: [["إجمالي المدارس", "35,000"], ["الطلاب", "6M+"], ["متوسط الأداء", "89%"], ["الميزانية", "مستقرة"]],
+            tables: {
+                "مدارس المملكة": `
+                    <tr><th>اسم المدرسة</th><th>المدينة</th><th>المدير/ة</th><th>الطلاب</th><th>التقدم</th></tr>
+                    <tr><td>مدرسة الرواد النموذجية</td><td>جدة</td><td>هيا أحمد</td><td>1200</td><td>92%</td></tr>
+                    <tr><td>مدارس المنار الأهلية</td><td>الرياض</td><td>فهد منصور</td><td>2500</td><td>95%</td></tr>
+                    <tr><td>مدرسة الأمل الابتدائية</td><td>الدمام</td><td>نورة السعد</td><td>850</td><td>88%</td></tr>
+                `
+            }
+        },
+        "هيا": {
+            role: "مديرة المدرسة", color: "var(--primary)", school: "مدرسة الرواد النموذجية - جدة",
+            menu: ["الرئيسية", "تقييم المعلمين", "تنبيهات الطلاب"],
+            stats: [["المعلمين", "85"], ["الطلاب", "1200"], ["نسبة الغياب", "2%"], ["الأداء العام", "92%"]],
+            tables: {
+                "تقييم المعلمين": `
+                    <tr><th>المعلم/ة</th><th>المادة</th><th>التقييم الحالي</th><th>رصد تقييم جديد</th><th>الإجراء</th></tr>
+                    <tr><td>أ. سارة محمد</td><td>رياضيات</td><td>95</td><td><input type="number" class="input-score" placeholder="00"></td><td><button class="btn-action btn-approve" onclick="alert('تم اعتماد التقييم وإرساله للمعلمة')">اعتماد</button></td></tr>
+                    <tr><td>أ. ليلى فهد</td><td>حاسب</td><td>88</td><td><input type="number" class="input-score" placeholder="00"></td><td><button class="btn-action btn-approve" onclick="alert('تم اعتماد التقييم')">اعتماد</button></td></tr>
+                `
+            }
+        },
+        "معلمة": {
+            role: "معلمة مادة", color: "var(--teacher)", school: "مدرسة الرواد النموذجية",
+            menu: ["الرئيسية", "تقييمي الشخصي", "طالباتي"],
+            stats: [["طالباتي", "28"], ["متوسط الفصل", "87%"], ["الواجبات", "95%"], ["تقييمي", "95"]],
+            tables: {
+                "تقييمي الشخصي": `
+                    <tr><th>الفترة</th><th>الدرجة</th><th>بواسطة</th><th>القرار</th></tr>
+                    <tr><td>الفصل الدراسي الثاني</td><td>95 / 100</td><td>المديرة هيا</td><td><button class="btn-action btn-reject" onclick="confirm('هل تودين تقديم اعتراض رسمي على هذا التقييم؟')">تقديم اعتراض</button></td></tr>
+                `
+            }
+        }
+    };
+
+    function handleLogin() {
+        const u = document.getElementById('userInput').value.trim();
+        if (db[u]) {
+            document.getElementById('login-overlay').style.display = 'none';
+            document.getElementById('sidebar').style.display = 'flex';
+            document.getElementById('main-app').style.display = 'flex';
+            loadDashboard(u);
+        } else { alert("ادخلي: وزارة أو هيا أو معلمة"); }
+    }
+
+    function loadDashboard(userKey) {
+        const data = db[userKey];
+        document.getElementById('user-display').innerText = userKey;
+        document.getElementById('school-name').innerText = data.school;
+        const tag = document.getElementById('role-tag');
+        tag.innerText = data.role;
+        tag.style.backgroundColor = data.color;
+
+        document.getElementById('menu-box').innerHTML = data.menu.map((m, i) =>
