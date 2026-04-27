@@ -137,3 +137,32 @@
         tag.style.backgroundColor = data.color;
 
         document.getElementById('menu-box').innerHTML = data.menu.map((m, i) =>
+<div class="nav-link ${i===0?'active':''}" onclick="nav('${m}', '${userKey}', this)">${m}</div>
+        ).join('');
+
+        document.getElementById('stats-grid').innerHTML = data.stats.map(s => `
+            <div class="stat-card" style="border-color:${data.color}"><h4>${s[0]}</h4><h2>${s[1]}</h2></div>
+        `).join('');
+
+        nav(data.menu[0], userKey, null);
+    }
+
+    function nav(page, userKey, el) {
+        if (el) {
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            el.classList.add('active');
+        }
+        const content = document.getElementById('dynamic-content');
+        if (page === "الرئيسية") {
+            content.innerHTML = <canvas id="mainChart" height="120"></canvas>;
+            new Chart(document.getElementById('mainChart'), {
+                type: 'line',
+                data: { labels: ['يناير', 'فبراير', 'مارس', 'أبريل'], datasets: [{ label: 'الأداء', data: [60, 80, 75, 90], borderColor: db[userKey].color, fill: true, backgroundColor: db[userKey].color+'22' }] }
+            });
+        } else {
+            content.innerHTML = <table>${db[userKey].tables[page]}</table>;
+        }
+    }
+</script>
+</body>
+</html>
