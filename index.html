@@ -130,3 +130,30 @@
         } else if(role.includes("ولي")) {
             menu.innerHTML = <div class="nav-link active">👦 أبنائي</div><div class="nav-link">📩 تواصل</div>;
             stats.
+innerHTML = <div class="stat-card"><h4>الأبناء</h4><h2>2</h2></div><div class="stat-card"><h4>النقاط</h4><h2>150</h2></div><div class="stat-card"><h4>المستوى</h4><h2>92%</h2></div><div class="stat-card"><h4>الغياب</h4><h2>0</h2></div>;
+            side.innerHTML = <div class="card"><h3>📩 رسالة</h3><button class="btn-go" style="font-size:12px; padding:10px;">تواصل مع المعلمة</button></div>;
+            initChart([70, 80, 85, 92]);
+        } else {
+            // واجهة الطالب أو المدير الافتراضية
+            title.innerText = "الأداء الدراسي";
+            menu.innerHTML = <div class="nav-link active">📊 أداء</div><div class="nav-link">🧠 خطة التحسين</div>;
+            stats.innerHTML = <div class="stat-card"><h4>الدرجة</h4><h2>92%</h2></div><div class="stat-card"><h4>النقاط</h4><h2>88</h2></div><div class="stat-card"><h4>الترتيب</h4><h2>3</h2></div><div class="stat-card"><h4>الصحة</h4><h2>✔</h2></div>;
+            side.innerHTML = <div class="card"><div class="progress-circle">75%</div><p style="text-align:center;">إنجاز الخطة</p></div>;
+            initChart([50, 60, 80, 92]);
+        }
+    }
+
+    function initChart(data) {
+        const ctx = document.getElementById('mainChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['أسبوع 1', 'أسبوع 2', 'أسبوع 3', 'أسبوع 4'],
+                datasets: [{ data: data, borderColor: '#6366f1', fill: true, backgroundColor: 'rgba(99, 102, 241, 0.1)', tension: 0.4 }]
+            },
+            options: { plugins: { legend: { display: false } } }
+        });
+    }
+</script>
+</body>
+</html>
