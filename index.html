@@ -8,8 +8,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --admin-color: #6366f1;   --teacher-color: #ec4899;
-            --health-color: #10b981;  --acad-color: #f59e0b;
+            --admin-color: #6366f1; --teacher-color: #ec4899;
+            --health-color: #10b981; --acad-color: #f59e0b;
             --transport-color: #06b6d4; --parent-color: #8b5cf6;
             --bg-light: #F8FAFC; --white: #ffffff;
         }
@@ -20,10 +20,10 @@
         #login-overlay { position: fixed; inset: 0; background: #fff; z-index: 2000; display: flex; align-items: center; justify-content: center; }
         .login-box { text-align: center; width: 380px; padding: 40px; border-radius: 30px; box-shadow: 0 20px 60px rgba(0,0,0,0.1); }
         .login-box img { width: 160px; margin-bottom: 10px; }
-        .login-box input { width: 100%; padding: 14px; margin: 10px 0; border-radius: 12px; border: 1.5px solid #eee; text-align: center; }
+        .login-box input { width: 100%; padding: 14px; margin: 10px 0; border-radius: 12px; border: 1.5px solid #eee; text-align: center; outline: none; }
         .btn-go { background: linear-gradient(180deg, #6366f1 0%, #4338ca 100%); color: white; border: none; width: 100%; padding: 15px; border-radius: 12px; cursor: pointer; font-weight: 900; }
 
-        /* التنسيق الرئيسي للوحة */
+        /* القائمة الجانبية */
         .sidebar { width: 260px; color: white; padding: 30px 20px; display: none; flex-direction: column; }
         .main-wrapper { flex: 1; display: none; flex-direction: column; overflow-y: auto; }
         .header { height: 75px; background: white; padding: 0 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
@@ -32,7 +32,7 @@
         .grid-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 30px; }
         .stat-card { background: white; padding: 25px; border-radius: 20px; text-align: center; border-bottom: 5px solid; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         
-        /* ألوان الفئات */
+        /* ألوان الثيمات */
         .theme-admin { background: var(--admin-color) !important; }
         .theme-teacher { background: var(--teacher-color) !important; }
         .theme-health { background: var(--health-color) !important; }
@@ -41,14 +41,17 @@
         .theme-parent { background: var(--parent-color) !important; }
 
         .nav-link { padding: 12px; border-radius: 10px; margin-bottom: 5px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 10px; }
-        .nav-link:hover { background: rgba(255,255,255,0.2); }
+        .nav-link:hover, .nav-link.active { background: rgba(255,255,255,0.2); }
+        
+        .page-content { display: none; }
+        .page-content.active { display: block; }
     </style>
 </head>
 <body>
 
     <div id="login-overlay">
         <div class="login-box">
-            <img src="logo.png.PNG" alt="لوجو بصيرة">
+            <img src="logo.png.PNG" alt="بصيرة">
             <h1 style="color: #6366f1; font-weight: 900;">بصيرة</h1>
             <input type="text" id="userInput" placeholder="اسم المستخدم">
             <input type="password" id="passInput" placeholder="كلمة المرور">
@@ -57,8 +60,9 @@
     </div>
 
     <div id="sidebar" class="sidebar">
-        <h2 id="side-title" style="text-align:center; margin-bottom:30px;">بصيرة</h2>
+        <h2 style="text-align:center; margin-bottom:30px;">بصيرة</h2>
         <div id="dynamic-menu"></div>
+        <div class="nav-link" style="margin-top:auto" onclick="location.reload()">🚪 خروج</div>
     </div>
 
     <div id="main-app" class="main-wrapper">
@@ -66,13 +70,8 @@
             <div style="font-weight: 900;">مرحباً، <span id="display-name"></span></div>
             <div id="role-badge" style="padding: 5px 15px; border-radius: 20px; color: white; font-size: 12px;"></div>
         </div>
-        <div class="content">
-            <div id="stats-area" class="grid-stats"></div>
-            <div style="background:white; padding:25px; border-radius:25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
-                <h3 id="chart-title">تحليل البيانات الذكي</h3>
-                <canvas id="mainChart"></canvas>
+        <div class="content" id="main-content-area">
             </div>
-        </div>
     </div>
 
 <script>
@@ -81,59 +80,105 @@
     function appLogin() {
         const user = document.getElementById('userInput').value.trim();
         const pass = document.getElementById('passInput').value.trim();
-
         if (user !== "" && pass === "1234") {
             document.getElementById('login-overlay').style.display = 'none';
             document.getElementById('sidebar').style.display = 'flex';
             document.getElementById('main-app').style.display = 'flex';
             document.getElementById('display-name').innerText = user;
             renderInterface(user);
-        } else {
-            alert("خطأ في البيانات!");
         }
     }
 
-    function renderInterface(role) {
+    function renderInterface(user) {
         const sidebar = document.getElementById('sidebar');
-        const badge = document.getElementById('role-badge');
         const menu = document.getElementById('dynamic-menu');
-        const stats = document.getElementById('stats-area');
+        const content = document.getElementById('main-content-area');
+        const badge = document.getElementById('role-badge');
         
-        let config = { color: '', label: '', items: [], data: [], stats: '' };
+        sidebar.className = 'sidebar'; // إعادة ضبط التنسيق
+        let data = { theme: '', role: '', menu: [], stats: [], chartData: [] };
 
-        if(role.includes("معلم")) {
-            config = { color: 'theme-teacher', label: 'كادر تعليمي', items: ['📚 فصولي', '📝 رصد درجات', '📅 غياب'], data: [70, 85, 80, 90], stats: [['طالباتي', '28'], ['المنهج', '80%'], ['النشاط', 'ممتاز'], ['تنبيه', '1']] };
-        } else if(role.includes("صحي")) {
-            config = { color: 'theme-health', label: 'مرشد صحي', items: ['🩺 حالات', '🏥 العيادة', '💉 تطعيمات'], data: [20, 30, 45, 10], stats: [['زيارات', '5'], ['حالات', '2'], ['لقاحات', '98%'], ['أدوية', '✔']] };
-        } else if(role.includes("أكاديمي")) {
-            config = { color: 'theme-acad', label: 'مرشد أكاديمي', items: ['📉 تعثر', '🤝 جلسات', '🎓 خريجات'], data: [40, 60, 75, 85], stats: [['حالات', '12'], ['تحسن', '15%'], ['جلسات', '4'], ['خطة', 'جاهزة']] };
-        } else if(role.includes("نقل")) {
-            config = { color: 'theme-transport', label: 'مسؤولة نقل', items: ['🚌 حافلات', '📍 تتبع', '📞 بلاغات'], data: [90, 95, 92, 100], stats: [['باصات', '10'], ['طالبات', '300'], ['تأخير', '0'], ['وقود', '80%']] };
-        } else if(role.includes("ولي")) {
-            config = { color: 'theme-parent', label: 'ولي أمر', items: ['👦 ابنائي', '📩 تواصل', '💰 مالي'], data: [80, 85, 90, 95], stats: [['المعدل', '95%'], ['غياب', '0'], ['سلوك', '100'], ['رسائل', '2']] };
-        } else {
-            config = { color: 'theme-admin', label: 'إدارة', items: ['📊 إحصاء', '🏫 مدارس', '⚙️ ضبط'], data: [70, 80, 90, 95], stats: [['طلاب', '1200'], ['معلمين', '80'], ['رضا', '96%'], ['تنبيه', '0']] };
+        // تحديد الدور بناءً على الاسم
+        if (user === "هيا" || user === "مدير") {
+            data = {
+                theme: 'theme-admin', role: 'مدير النظام',
+                menu: ['📊 إحصائيات', '🏫 المدارس', '⚙️ الإعدادات'],
+                stats: [['الطلاب', '1200'], ['المعلمين', '85'], ['الميزانية', '92%'], ['تنبيهات', '0']],
+                chartData: [70, 85, 90, 95]
+            };
+        } else if (user.includes("معلم")) {
+            data = {
+                theme: 'theme-teacher', role: 'معلمة',
+                menu: ['📚 فصولي', '📝 الدرجات', '📅 الغياب'],
+                stats: [['طالباتي', '28'], ['المنهج', '75%'], ['النشاط', 'ممتاز'], ['مهام', '2']],
+                chartData: [60, 70, 75, 88]
+            };
+        } else if (user.includes("صحي")) {
+            data = {
+                theme: 'theme-health', role: 'مرشد صحي',
+                menu: ['🩺 السجلات', '🏥 العيادة', '💉 التطعيمات'],
+                stats: [['حالات اليوم', '3'], ['إسعافات', '1'], ['فحص دوري', '90%'], ['أدوية', 'متوفر']],
+                chartData: [20, 40, 30, 50]
+            };
+        } else if (user.includes("أكاديمي")) {
+            data = {
+                theme: 'theme-acad', role: 'مرشد أكاديمي',
+                menu: ['📈 المتعثرات', '🤝 جلسات', '🎓 خريجات'],
+                stats: [['متابعة', '12'], ['تحسن', '20%'], ['جلسات', '5'], ['توجيه', 'نشط']],
+                chartData: [40, 55, 70, 82]
+            };
+        } else if (user.includes("نقل")) {
+            data = {
+                theme: 'theme-transport', role: 'مسؤولة نقل',
+                menu: ['🚌 الحافلات', '📍 المسارات', '📞 تواصل'],
+                stats: [['حافلات', '10'], ['طالبات', '340'], ['تأخير', '0'], ['وقود', '90%']],
+                chartData: [90, 95, 92, 100]
+            };
+        } else if (user.includes("ولي")) {
+            data = {
+                theme: 'theme-parent', role: 'ولي أمر',
+                menu: ['👦 الأبناء', '📩 رسائل', '💰 رسوم'],
+                stats: [['المعدل', '96%'], ['غياب', '1'], ['سلوك', 'ممتاز'], ['اشعار', '3']],
+                chartData: [80, 88, 92, 96]
+            };
         }
 
-        sidebar.className = 'sidebar ' + config.color;
-        badge.className = config.color;
-        badge.innerText = config.label;
+        // تطبيق التغييرات
+        sidebar.classList.add(data.theme);
+        badge.className = data.theme;
+        badge.innerText = data.role;
+        badge.style.padding = '5px 15px';
+        badge.style.borderRadius = '20px';
+
+        menu.innerHTML = data.menu.map(item => `<div class="nav-link">${item}</div>`).join('');
         
-        menu.innerHTML = config.items.map(i => `<div class="nav-link">${i}</div>`).join('');
-        stats.innerHTML = config.stats.map(s => `<div class="stat-card" style="border-color: var(--${config.color.split('-')[1]}-color)"><h4>${s[0]}</h4><h2>${s[1]}</h2></div>`).join('');
+        content.innerHTML = `
+            <div class="grid-stats">
+                ${data.stats.map(s => `
+                    <div class="stat-card" style="border-color: var(--${data.theme.split('-')[1]}-color)">
+                        <h4>${s[0]}</h4><h2>${s[1]}</h2>
+                    </div>`).join('')}
+            </div>
+            <div style="background:white; padding:30px; border-radius:25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+                <h3>${data.role} - تحليل البيانات</h3>
+                <canvas id="mainChart"></canvas>
+            </div>
+        `;
         
-        initChart(config.data);
+        initChart(data.chartData);
     }
 
-    function initChart(data) {
+    function initChart(dataValues) {
         const ctx = document.getElementById('mainChart').getContext('2d');
-        if(myChart) myChart.destroy();
+        if (myChart) myChart.destroy();
         myChart = new Chart(ctx, {
             type: 'line',
-            data: { labels: ['1', '2', '3', '4'], datasets: [{ data: data, borderColor: '#6366f1', tension: 0.4, fill: true, backgroundColor: 'rgba(99,102,241,0.05)' }] }
+            data: {
+                labels: ['أسبوع 1', 'أسبوع 2', 'أسبوع 3', 'أسبوع 4'],
+                datasets: [{ data: dataValues, borderColor: '#6366f1', tension: 0.4, fill: true, backgroundColor: 'rgba(99,102,241,0.05)' }]
+            }
         });
     }
 </script>
 </body>
 </html>
-
