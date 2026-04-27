@@ -50,4 +50,83 @@
         table { width: 100%; border-collapse: collapse; }
         th, td { text-align: right; padding: 15px; border-bottom: 1px solid #f1f5f9; font-size: 14px; }
         .badge { padding: 5px 10px; border-radius: 8px; font-size: 12px; font-weight: bold; }
-        .
+        .progress-circle { width: 100px; height: 100px; border-radius: 50%; border: 8px solid #f1f5f9; border-top-color: var(--main-purple); display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 900; margin: 0 auto 15px; }
+    </style>
+</head>
+<body>
+
+    <div id="login-overlay">
+        <div class="login-box">
+            <h1>بصيرة</h1>
+            <p style="color: #64748b; margin-bottom: 20px;">النظام التعليمي الذكي</p>
+            <input type="text" id="userInput" placeholder="اسم المستخدم">
+            <input type="password" id="passInput" placeholder="كلمة المرور">
+            <button class="btn-go" onclick="appLogin()">دخول للنظام</button>
+            <p id="error-msg">الاسم أو كلمة المرور (1234) غير صحيحة!</p>
+        </div>
+    </div>
+
+    <div id="sidebar" class="sidebar">
+        <h2>بصيرة</h2>
+        <div id="dynamic-menu"></div>
+        <div class="nav-link" style="margin-top: auto;" onclick="location.reload()">🚪 خروج</div>
+    </div>
+
+    <div id="main-app" class="main-wrapper">
+        <div class="header">
+            <div style="font-weight: 900;">مرحباً، <span id="display-name"></span> 👋</div>
+            <div class="user-profile">
+                <div class="user-img"></div>
+                <span>🔔</span>
+            </div>
+        </div>
+
+        <div class="content">
+            <div id="stats-area" class="grid-stats"></div>
+            <div class="dashboard-grid">
+                <div class="card">
+                    <h3 id="primary-title">مخطط الأداء العام</h3>
+                    <canvas id="mainChart"></canvas>
+                </div>
+                <div id="side-content"></div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    function appLogin() {
+        const user = document.getElementById('userInput').value.trim();
+        const pass = document.getElementById('passInput').value.trim();
+        const error = document.getElementById('error-msg');
+
+        // كلمة المرور هي 1234
+        if (user !== "" && pass === "1234") {
+            document.getElementById('login-overlay').style.display = 'none';
+            document.getElementById('sidebar').style.display = 'flex';
+            document.getElementById('main-app').style.display = 'flex';
+            document.getElementById('display-name').innerText = user;
+            renderInterface(user);
+        } else {
+            error.style.display = 'block';
+        }
+    }
+
+    function renderInterface(role) {
+        const menu = document.getElementById('dynamic-menu');
+        const stats = document.getElementById('stats-area');
+        const side = document.getElementById('side-content');
+        const title = document.getElementById('primary-title');
+
+        if(role.includes("معلمة") || role === "صالحة") {
+            menu.innerHTML = <div class="nav-link active">🏠 طلابي</div><div class="nav-link">📊 الدرجات</div>;
+            stats.innerHTML = <div class="stat-card"><h4>الفصل</h4><h2>1/أ</h2></div><div class="stat-card"><h4>الطلاب</h4><h2>24</h2></div><div class="stat-card"><h4>المهام</h4><h2>5</h2></div><div class="stat-card"><h4>التفاعل</h4><h2>90%</h2></div>;
+            side.innerHTML = <div class="card"><h3>🤖 اقتراح AI</h3><p>يُنصح بمراجعة درس "الكسور" للطلاب المتعثرين.</p></div>;
+            initChart([60, 80, 85, 95]);
+        } else if(role.includes("مرشد") || role.includes("صحي")) {
+            menu.innerHTML = <div class="nav-link active">🩺 السجل الصحي</div><div class="nav-link">👥 الحالات</div>;
+            stats.innerHTML = <div class="stat-card"><h4>أعذار</h4><h2>3</h2></div><div class="stat-card"><h4>حالات</h4><h2>5</h2></div><div class="stat-card"><h4>صحتي</h4><h2>✔</h2></div><div class="stat-card"><h4>كوبونات</h4><h2>10</h2></div>;
+            side.innerHTML = <div class="card"><h3>🏥 تنبيه صحي</h3><p>تم استلام عذر طبي للطالب عمار.</p></div>;
+            initChart([40, 50, 70, 85]);
+        } else if(role.includes("ولي")) {
+            menu.innerHTML = <div class="nav-link active">👦 أبنائي</div><div class="nav-link">📩 تواصل</div>;
+            stats.
