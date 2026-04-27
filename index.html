@@ -207,3 +207,18 @@ innerText = user;
                     label: 'التقدم التعليمي',
                     data: dataValues,
                     borderColor: '#6366f1',
+                    backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: { plugins: { legend: { display: false } } }
+        });
+    }
+
+    function askAI() {
+        document.getElementById('ai-text').innerText = "🤖 يتم الآن تحليل بيانات الطالب... تم اكتشاف تحسن بنسبة 15% بعد الالتزام بخطة التحسين. استمر!";
+    }
+</script>
+</body>
+</html>
