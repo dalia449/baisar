@@ -56,3 +56,76 @@
             <img src="logo.png.PNG" alt="بصيرة" width="120">
             <h1 style="color: var(--primary); font-weight: 900; margin: 15px 0;">بصيرة</h1>
             <input type="text" id="userInput" placeholder="ادخلي (هيا، معلمة، طالب، ولي أمر)">
+<input type="password" id="passInput" placeholder="كلمة المرور 1234">
+            <button class="btn-go" onclick="appLogin()">دخول للمسابقة</button>
+        </div>
+    </div>
+
+    <div id="sidebar" class="sidebar">
+        <h2 style="text-align:center; margin-bottom:30px;">بصيرة</h2>
+        <div id="dynamic-menu"></div>
+    </div>
+
+    <div id="main-app" class="main-wrapper">
+        <div class="header">
+            <div style="font-weight:900;">مرحباً، <span id="display-name"></span> 👋</div>
+            <div id="role-badge" style="padding: 5px 15px; border-radius: 20px; color: white; font-size: 12px;"></div>
+        </div>
+
+        <div class="content">
+            <div class="ai-box">
+                <h4 style="color: var(--primary); margin-bottom: 10px;">🤖 مساعد بصيرة الذكي</h4>
+                <div class="chat-container" id="chat-window">
+                    <div class="chat-msg msg-ai" id="ai-initial-msg"></div>
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" id="chat-input" placeholder="اسألي بصيرة أو اطلبي الدعم...">
+                    <button onclick="sendChat()" style="background:var(--primary); color:white; border:none; padding:10px 20px; border-radius:10px; cursor:pointer;">إرسال</button>
+                </div>
+            </div>
+
+            <div id="stats-area" class="grid-stats"></div>
+
+            <div class="card-view">
+                <h3 id="view-title">تتبع الأداء والمؤشرات</h3>
+                <div id="main-display">
+                    <canvas id="mainChart" height="100"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    let myChart = null;
+    let currentData = {};
+
+    const db = {
+        "هيا": {
+            label: "المدير العام", color: "var(--primary)", menu: ["الرئيسية", "المدارس", "التقارير"],
+            stats: [["طلاب", "1200"], ["معلمين", "85"], ["أداء", "94%"], ["إنذارات", "2"]],
+            ai: "تنبيه: مدرسة الأمل سجلت انخفاضاً بنسبة 3% في مادة الفيزياء هذا الأسبوع.",
+            chart: [80, 85, 90, 94],
+            details: "<tr><th>المدرسة</th><th>الأداء</th><th>الحالة</th></tr><tr><td>الرواد</td><td>98%</td><td>مستقر</td></tr><tr><td>الأمل</td><td>82%</td><td class='low-trend'>انخفاض</td></tr>"
+        },
+        "معلمة": {
+            label: "المعلمة", color: "var(--teacher)", menu: ["الرئيسية", "تتبع الانخفاض", "الدرجات"],
+            stats: [["طالبات", "28"], ["متوسط", "88%"], ["متعثرات", "3"], ["نشاط", "ممتاز"]],
+            ai: "تذكير: الطالبة ريم تراجع أداؤها في اختبار (الخوارزميات). هل ترغبين بإرسال خطة دعم؟",
+            chart: [60, 70, 85, 88],
+            details: "<tr><th>الطالبة</th><th>المقرر</th><th>مستوى التراجع</th></tr><tr><td>سارة</td><td>Web Dev</td><td>-2%</td></tr><tr><td>ريم</td><td>Data Structures</td><td class='low-trend'>-15% هبوط</td></tr>"
+        },
+        "طالب": {
+            label: "بوابة الطالب", color: "var(--student)", menu: ["الرئيسية", "مقرراتي", "المهام"],
+            stats: [["معدلي", "90%"], ["غياب", "0"], ["نقاطي", "450"], ["ترتيبي", "5"]],
+            ai: "أهلاً بك! لاحظت انخفاضاً بسيطاً في مادة (UI Design). لقد أعددت لك ملخصاً لتعويض الدرجات.",
+            chart: [95, 92, 85, 90],
+            details: "<tr><th>المادة</th><th>الدرجة</th><th>المؤشر</th></tr><tr><td>Web App</td><td>95</td><td>📈</td></tr><tr><td>UI Design</td><td>78</td><td class='low-trend'>📉 انخفاض</td></tr>"
+        },
+        "ولي أمر": {
+            label: "ولي الأمر", color: "var(--parent)", menu: ["الرئيسية", "تتبع الأبناء", "الرسائل"],
+            stats: [["الأبناء", "2"], ["متوسطهم", "95%"], ["بلاغات", "0"], ["رسائل", "3"]],
+            ai: "رسالة تذكيرية: ابنكم خالد لديه انخفاض في مادة الرياضيات، بينما حققت ابنته نورة تقدماً مذهلاً في الحاسب.",
+            chart: [88, 90, 93, 95],
+            details: "<tr><th>الابن</th><th>المقرر المنخفض</th><th>السلوك</th><th>الأكاديمي</th></tr><tr><td>خالد</td><td>الرياضيات</td><td>ممتاز</td><td class='low-trend'>متراجع</td></tr><tr><td>نورة</td><td>الحاسب</td><td>ممتاز</td><td>متميز</td></tr>"
+        }
+    };
