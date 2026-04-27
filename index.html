@@ -58,3 +58,88 @@
             <h1 style="color: var(--primary); font-weight: 900;">بصيرة</h1>
             <input type="text" id="userInput" placeholder="اسم المستخدم">
             <input type="password" id="passInput" placeholder="كلمة المرور">
+<button class="btn-go" onclick="appLogin()">دخول للنظام</button>
+        </div>
+    </div>
+
+    <div id="sidebar" class="sidebar">
+        <h2>بصيرة</h2>
+        <div id="dynamic-menu"></div>
+        <div class="nav-link" style="margin-top:auto" onclick="location.reload()">🚪 خروج</div>
+    </div>
+
+    <div id="main-app" class="main-wrapper">
+        <div class="header">
+            <div style="font-weight:900; font-size:18px;">مرحباً، <span id="display-name"></span> 👋</div>
+            <div id="role-badge" class="badge"></div>
+        </div>
+
+        <div class="content">
+            <div id="stats-area" class="grid-stats"></div>
+
+            <div id="view-dashboard" class="card-view active">
+                <h3>التحليل البياني</h3>
+                <canvas id="mainChart" height="100"></canvas>
+            </div>
+
+            <div id="view-details" class="card-view">
+                <h3 id="details-title">التفاصيل</h3>
+                <div id="details-content"></div>
+            </div>
+
+            <div class="ai-box">
+                <h4 style="color: var(--primary)">🤖 رؤية بصيرة الذكية:</h4>
+                <p id="ai-text"></p>
+            </div>
+        </div>
+    </div>
+
+<script>
+    let myChart = null;
+    let currentUserRole = "";
+
+    function appLogin() {
+        const user = document.getElementById('userInput').value.trim();
+        const pass = document.getElementById('passInput').value.trim();
+        if (user !== "" && pass === "1234") {
+            document.getElementById('login-overlay').style.display = 'none';
+            document.getElementById('sidebar').style.display = 'flex';
+            document.getElementById('main-app').style.display = 'flex';
+            document.getElementById('display-name').innerText = user;
+            setupRole(user);
+        }
+    }
+
+    function setupRole(user) {
+        const menu = document.getElementById('dynamic-menu');
+        const badge = document.getElementById('role-badge');
+        let cfg = {};
+
+        if (user === "هيا" || user === "مدير") {
+            cfg = { label: 'مدير النظام', color: 'var(--primary)', cls: 'theme-admin', 
+                   btns: ['الرئيسية', 'المدارس', 'المعلمين'], 
+                   stats: [['الطلاب', '1200'], ['المعلمين', '85'], ['الأداء', '94%'], ['تنبيه', '0']],
+                   ai: 'النظام يعمل بكفاءة عالية، تم رصد زيادة في التفاعل بنسبة 10%.', chart: [60, 80, 85, 94] };
+        } else if (user.includes("معلم")) {
+            cfg = { label: 'معلمة', color: 'var(--teacher)', cls: 'theme-teacher',
+                   btns: ['الرئيسية', 'فصولي', 'الدرجات'],
+                   stats: [['طالباتي', '28'], ['المنهج', '80%'], ['الغياب', '2'], ['التقييم', 'ممتاز']],
+                   ai: 'ننصح بالتركيز على مهارات التحليل لدى طالبات الفصل (ب).', chart: [50, 65, 80, 87] };
+        } else if (user.includes("صحي")) {
+            cfg = { label: 'مرشد صحي', color: 'var(--health)', cls: 'theme-health',
+                   btns: ['الرئيسية', 'العيادة', 'السجلات'],
+                   stats: [['حالات', '3'], ['فحوصات', '95%'], ['تطعيم', 'مكتمل'], ['إسعاف', '1']],
+                   ai: 'بيئة المدرسة صحية تماماً، تم تحديث سجلات التطعيم لـ 400 طالبة.', chart: [30, 45, 60, 75] };
+        } else if (user.includes("نقل")) {
+            cfg = { label: 'مسؤولة نقل', color: 'var(--transport)', cls: 'theme-transport',
+                   btns: ['الرئيسية', 'الحافلات', 'المسارات'],
+                   stats: [['باصات', '12'], ['طالبات', '340'], ['تأخير', '0'], ['وقود', '88%']],
+                   ai: 'تم تحسين مسار الحافلة رقم 4 لتوفير 10 دقائق من وقت الرحلة.', chart: [90, 95, 92, 100] };
+        } else if (user.includes("ولي")) {
+            cfg = { label: 'ولي أمر', color: 'var(--parent)', cls: 'theme-parent',
+                   btns: ['الرئيسية', 'الأبناء', 'الرسائل'],
+                   stats: [['المعدل', '96%'], ['غياب', '0'], ['سلوك', '100%'], ['اشعار', '2']],
+                   ai: 'ابنتكم مرشحة لجائزة الطالبة المثالية لهذا الشهر.', chart: [80, 85, 92, 96] };
+        }
+
+        badge.innerText = cfg.label; badge.style.backgroundColor = cfg.
