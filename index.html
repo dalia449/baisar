@@ -59,3 +59,75 @@
     <div id="login-overlay">
         <div class="login-box">
             <img src="logo.
+png.PNG" alt="بصيرة">
+            <h1 style="color: var(--primary); font-weight: 900;">بصيرة</h1>
+            <input type="text" id="userInput" placeholder="اسم المستخدم (هيا، معلمة، أكاديمي، ولي أمر...)">
+            <input type="password" id="passInput" placeholder="كلمة المرور">
+            <button class="btn-go" onclick="handleLogin()">دخول للنظام</button>
+        </div>
+    </div>
+
+    <div id="sidebar" class="sidebar">
+        <h2>بصيرة</h2>
+        <div id="menu-box"></div>
+        <div class="nav-link" style="margin-top:auto" onclick="location.reload()">🚪 خروج</div>
+    </div>
+
+    <div id="main-app" class="main-wrapper">
+        <div class="header">
+            <div style="font-weight: 900; font-size: 18px;">مرحباً، <span id="user-title"></span></div>
+            <div id="role-badge" class="badge"></div>
+        </div>
+
+        <div class="content">
+            <div class="ai-panel">
+                <h4 style="color: var(--primary)">🤖 مساعد بصيرة الذكي (تنبيهات ودعم فني)</h4>
+                <div class="chat-area" id="ai-chat"></div>
+                <div style="display:flex; gap:10px;">
+                    <input type="text" id="chat-in" placeholder="اسألي بصيرة..." style="flex:1; padding:10px; border-radius:10px; border:1px solid #ddd;">
+                    <button onclick="send()" style="background:var(--primary); color:white; padding:0 20px; border:none; border-radius:10px; cursor:pointer;">إرسال</button>
+                </div>
+            </div>
+
+            <div id="stats-grid" class="grid-stats"></div>
+
+            <div class="display-view">
+                <h3 id="view-title">التقرير العام</h3>
+                <div id="dynamic-content">
+                    <canvas id="mainChart" height="100"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    let myChart = null;
+    const db = {
+        "هيا": {
+            role: "مدير النظام", color: "var(--primary)", menu: ["الرئيسية", "المدارس", "التنبيهات"],
+            stats: [["الطلاب", "1200"], ["المعلمين", "85"], ["الأداء", "92%"], ["التنبيهات", "0"]],
+            ai: "نظام بصيرة يعمل بكفاءة. لا توجد تنبيهات إدارية معلقة حالياً.",
+            chart: [70, 85, 90, 92],
+            tables: {
+                "التنبيهات": "<tr><th>الحدث</th><th>التفاصيل</th><th>الوقت</th></tr><tr><td>جوري علي</td><td>انخفاض في الرياضيات</td><td>منذ 5 د</td></tr><tr><td>سارة أحمد</td><td>غياب متكرر (4 أيام)</td><td>منذ 10 د</td></tr><tr><td>تقرير الأداء</td><td>تم إرسال التقرير الأسبوعي</td><td>منذ 30 د</td></tr>"
+            }
+        },
+        "معلمة": {
+            role: "المعلمة", color: "var(--teacher)", menu: ["الرئيسية", "قائمة الطالبات", "فصولي"],
+            stats: [["متوسط الفصل", "87%"], ["الواجبات", "5/28"], ["الغياب", "2"], ["السلوك", "ممتاز 😊"]],
+            ai: "تحليل الذكاء (جوري علي): يوجد ضعف في أساسيات المادة. المستوى الحالي 55%. التوصية: جلسات تقوية 3 مرات أسبوعياً.",
+            chart: [60, 75, 80, 87],
+            tables: {
+                "قائمة الطالبات": "<tr><th>الطالبة</th><th>المادة</th><th>الدرجة</th><th>الخطر</th></tr><tr><td>سارة أحمد</td><td>رياضيات</td><td>95</td><td class='danger-low'>منخفض</td></tr><tr><td>نورة محمد</td><td>علوم</td><td>78</td><td class='danger-med'>متوسط</td></tr><tr><td>جوري علي</td><td>لغتي</td><td>55</td><td class='danger-high'>مرتفع</td></tr>"
+            }
+        },
+        "أكاديمي": {
+            role: "مرشد أكاديمي", color: "var(--acad)", menu: ["الرئيسية", "الطلاب المتعثرون"],
+            stats: [["طلاب المتابعة", "12"], ["جلسات منجزة", "5"], ["تحسن الأداء", "15%"], ["تقارير", "8"]],
+            ai: "تم رصد تعثر الطالبة جوري علي. الخطة الموصى بها: جلسات تقوية + متابعة أسبوعية.",
+            chart: [40, 50, 70, 85],
+            tables: {
+                "الطلاب المتعثرون": "<tr><th>الطالب</th><th>الحالة</th><th>المشكلة</th><th>الخطة</th></tr><tr><td>جوري علي</td><td class='danger-high'>مرتفع</td><td>ضعف أساسيات</td><td>جلسات تقوية</td></tr><tr><td>شهد خالد</td><td class='danger-med'>متوسط</td><td>ضعف قراءة</td><td>تمارين تفاعلية</td></tr>"
+            }
+        },
+        "صحي": {
