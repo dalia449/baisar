@@ -131,3 +131,86 @@ png.PNG" alt="بصيرة">
             }
         },
         "صحي": {
+role: "مرشد صحي", color: "var(--health)", menu: ["الرئيسية", "العيادة"],
+            stats: [["حالات اليوم", "3"], ["فحوصات دورية", "1"], ["التطعيمات", "90%"], ["الحالة", "محدثة"]],
+            ai: "جميع السجلات الصحية للطالبات محدثة لهذا الشهر.",
+            chart: [20, 40, 60, 90]
+        },
+        "نقل": {
+            role: "مسؤولة نقل", color: "var(--transport)", menu: ["الرئيسية", "الحافلات"],
+            stats: [["عدد الحافلات", "10"], ["الطلبات", "340"], ["التأخير", "0"], ["الوقود", "90%"]],
+            ai: "جميع الحافلات في مساراتها الصحيحة دون أي تأخير يذكر.",
+            chart: [80, 85, 90, 95]
+        },
+        "ولي أمر": {
+            role: "ولي أمر سارة أحمد", color: "var(--parent)", menu: ["الرئيسية", "تقارير الأداء"],
+            stats: [["الإنذارات", "3"], ["السلوك", "ممتاز"], ["الغياب", "1"], ["الأداء العام", "96%"]],
+            ai: "مرحبا ولي أمر سارة. ابنتكم تحقق نتائج ممتازة في جميع المواد مع التزام تام بالسلوك.",
+            chart: [85, 90, 93, 96],
+            tables: {
+                "تقارير الأداء": "<tr><th>المجال</th><th>التقييم</th><th>ملاحظات</th></tr><tr><td>السلوك</td><td>ممتاز (96%)</td><td>طالبة مثالية</td></tr><tr><td>الغياب</td><td>1 يوم</td><td>بعذر طبي</td></tr>"
+            }
+        }
+    };
+
+    function handleLogin() {
+        const user = document.getElementById('userInput').value.trim();
+        if (user in db) {
+            document.getElementById('login-overlay').style.display = 'none';
+            document.getElementById('sidebar').style.display = 'flex';
+            document.getElementById('main-app').style.display = 'flex';
+            document.getElementById('user-title').innerText = user;
+            loadUser(user);
+        } else { alert("يرجى إدخال مستخدم من القائمة (هيا، معلمة، أكاديمي، ولي أمر...)"); }
+    }
+
+    function loadUser(u) {
+        const data = db[u];
+        const badge = document.getElementById('role-badge');
+        badge.innerText = data.role;
+        badge.style.backgroundColor = data.color;
+        document.getElementById('ai-chat').innerHTML = <div class="msg-ai">${data.ai}</div>;
+        
+        document.getElementById('menu-box').innerHTML = data.menu.map((m, i) => 
+            <div class="nav-link ${i===0?'active':''}" onclick="nav('${m}', this)">${m}</div>
+        ).join('');
+
+        document.getElementById('stats-grid').innerHTML = data.stats.map(s => `
+            <div class="stat-card" style="border-color:${data.color}"><h4>${s[0]}</h4><h2>${s[1]}</h2></div>
+        `).join('');
+
+        renderChart(data.chart, data.color);
+    }
+
+    function nav(name, el) {
+        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+        el.classList.add('active');
+        const content = document.getElementById('dynamic-content');
+        if (name === "الرئيسية") {
+            content.innerHTML = <canvas id="mainChart" height="100"></canvas>;
+            renderChart(db[document.getElementById('user-title').innerText].chart, db[document.getElementById('user-title').innerText].color);
+        } else {
+            content.innerHTML = <table>${db[document.getElementById('user-title').innerText].tables[name] || "<tr><td>لا توجد بيانات مفصلة لهذا القسم حالياً</td></tr>"}</table>;
+        }
+    }
+
+    function renderChart(data, color) {
+        const ctx = document.getElementById('mainChart').getContext('2d');
+        if (myChart) myChart.destroy();
+        myChart = new Chart(ctx, {
+            type: 'line',
+            data: { labels: ['الأسبوع 1', 'الأسبوع 2', 'الأسبوع 3', 'الأسبوع 4'], datasets: [{ data: data, borderColor: color, fill: true, backgroundColor: color+'1A', tension: 0.4 }] },
+            options: { plugins: { legend: { display: false } } }
+        });
+    }
+
+    function send() {
+        const inp = document.getElementById('chat-in');
+        if (inp.value) {
+            document.getElementById('ai-chat').innerHTML += <div style="text-align:left; margin-bottom:10px;"><b>أنتِ:</b> ${inp.value}</div>;
+            inp.value = "";
+        }
+    }
+</script>
+</body>
+</html>
