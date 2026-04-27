@@ -128,3 +128,51 @@
             document.getElementById('header-user-name').innerText = user;
             renderInterface(user);
         } else {
+error.style.display = 'block';
+        }
+    }
+
+    function renderInterface(role) {
+        const menu = document.getElementById('dynamic-menu');
+        const stats = document.getElementById('stats-area');
+        const primaryTitle = document.getElementById('primary-title');
+        const alertList = document.getElementById('alert-list');
+        const secondary = document.getElementById('secondary-content');
+
+        menu.innerHTML = ''; stats.innerHTML = ''; alertList.innerHTML = ''; secondary.innerHTML = '';
+
+        if(role === "هيا" || role === "وزارة") {
+            menu.innerHTML = <div class="nav-link active">🏠 الرئيسية</div><div class="nav-link">👨‍🎓 الطلاب</div><div class="nav-link">👩‍🏫 المعلمين</div><div class="nav-link">📊 التقارير</div>;
+            stats.innerHTML = <div class="stat-card"><h4>عدد الطلاب</h4><h2>428</h2></div><div class="stat-card"><h4>المتعثرين</h4><h2 style="color:var(--danger)">12</h2></div><div class="stat-card"><h4>التحسن</h4><h2 style="color:var(--success)">+18%</h2></div><div class="stat-card"><h4>التفاعل</h4><h2>94%</h2></div>;
+            alertList.innerHTML = <p style="font-size:13px; margin-bottom:10px;">⚠️ <b>أكاديمي:</b> تراجع أداء الطالب عمار</p>;
+            secondary.innerHTML = <div class="card"><h3>👩‍🏫 أداء المعلمات</h3><table><tr><td>صالحة</td><td><span class="badge bg-green">92%</span></td></tr></table></div>;
+            initChart([65, 80, 85, 94]);
+        } else {
+            primaryTitle.innerText = "أدائي الدراسي";
+            menu.innerHTML = <div class="nav-link active">📊 أداء</div><div class="nav-link">🧠 خطة التحسين</div><div class="nav-link">🏆 نقاطي</div>;
+            stats.innerHTML = <div class="stat-card"><h4>درجاتي</h4><h2>92%</h2></div><div class="stat-card"><h4>نقاطي</h4><h2 style="color:var(--main-purple)">88 ⭐</h2></div><div class="stat-card"><h4>الترتيب</h4><h2>3</h2></div>;
+            alertList.innerHTML = <div class="progress-circle">75%</div><p style="text-align:center; font-weight:bold;">مستوى الإنجاز العام</p>;
+            secondary.innerHTML = <div class="card"><h3>🧠 خطة التحسين</h3><p>✅ مراجعة الضرب</p><p>⬜ حل واجب العلوم</p></div>;
+            initChart([40, 60, 75, 92]);
+        }
+    }
+
+    function initChart(dataValues) {
+        const ctx = document.getElementById('mainChart').getContext('2d');
+        if(window.myChart) window.myChart.destroy();
+        window.myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['أسبوع 1', 'أسبوع 2', 'أسبوع 3', 'أسبوع 4'],
+                datasets: [{ label: 'التقدم', data: dataValues, borderColor: '#6366f1', fill: true, tension: 0.4, backgroundColor: 'rgba(99, 102, 241, 0.1)' }]
+            },
+            options: { plugins: { legend: { display: false } } }
+        });
+    }
+
+    function askAI() {
+        document.getElementById('ai-text').innerText = "🤖 يتم الآن تحليل البيانات... هناك تحسن ملحوظ في الأداء العام!";
+    }
+</script>
+</body>
+</html>
