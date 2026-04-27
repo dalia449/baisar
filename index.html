@@ -129,3 +129,70 @@
             details: "<tr><th>الابن</th><th>المقرر المنخفض</th><th>السلوك</th><th>الأكاديمي</th></tr><tr><td>خالد</td><td>الرياضيات</td><td>ممتاز</td><td class='low-trend'>متراجع</td></tr><tr><td>نورة</td><td>الحاسب</td><td>ممتاز</td><td>متميز</td></tr>"
         }
     };
+function appLogin() {
+        const user = document.getElementById('userInput').value.trim();
+        if (user in db) {
+            currentData = db[user];
+            document.getElementById('login-overlay').style.display = 'none';
+            document.getElementById('sidebar').style.display = 'flex';
+            document.getElementById('main-app').style.display = 'flex';
+            document.getElementById('display-name').innerText = user;
+            loadDashboard();
+        } else { alert("يرجى كتابة: هيا، معلمة، طالب، أو ولي أمر"); }
+    }
+
+    function loadDashboard() {
+        const menu = document.getElementById('dynamic-menu');
+        const badge = document.getElementById('role-badge');
+        
+        badge.innerText = currentData.label;
+        badge.style.backgroundColor = currentData.color;
+        document.getElementById('ai-initial-msg').innerText = currentData.ai;
+
+        menu.innerHTML = currentData.menu.map((m, i) => `<div class="nav-link ${i===0?'active':''}" onclick="showPage('${m}', this)">${m}</div>`).join('');
+        
+        document.getElementById('stats-area').innerHTML = currentData.stats.map(s => `
+            <div class="stat-card" style="border-color:${currentData.color}"><h4>${s[0]}</h4><h2>${s[1]}</h2></div>
+        `).join('');
+
+        renderChart(currentData.chart, currentData.color);
+    }
+
+    function showPage(name, el) {
+        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+        el.classList.add('active');
+        const display = document.getElementById('main-display');
+        
+        if (name === "الرئيسية") {
+            display.innerHTML = <canvas id="mainChart" height="100"></canvas>;
+            renderChart(currentData.chart, currentData.color);
+        } else {
+            display.innerHTML = <table>${currentData.details}</table>;
+        }
+    }
+
+    function sendChat() {
+        const input = document.getElementById('chat-input');
+        const win = document.getElementById('chat-window');
+        if (input.value) {
+            win.innerHTML += <div class="chat-msg msg-user">${input.value}</div>;
+            setTimeout(() => {
+                win.innerHTML += <div class="chat-msg msg-ai">شكراً لتواصلك. تم استلام طلبك وسيقوم الدعم الفني أو الذكاء الاصطناعي بالرد فوراً.</div>;
+                win.scrollTop = win.scrollHeight;
+            }, 1000);
+            input.value = "";
+        }
+    }
+
+    function renderChart(data, color) {
+        const ctx = document.getElementById('mainChart').getContext('2d');
+        if (myChart) myChart.destroy();
+        myChart = new Chart(ctx, {
+            type: 'line',
+            data: { labels: ['W1', 'W2', 'W3', 'W4'], datasets: [{ data: data, borderColor: color, fill: true, backgroundColor: color+'1A', tension: 0.4 }] },
+            options: { plugins: { legend: { display: false } } }
+        });
+    }
+</script>
+</body>
+</html>
