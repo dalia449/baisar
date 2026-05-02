@@ -1,233 +1,252 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<title>بصيرة</title>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+‏<!DOCTYPE html>
+‏<html lang="ar" dir="rtl">
+‏<head>
+‏<meta charset="UTF-8">
+‏<title>بصيرة</title>
 
-<style>
-body{
-margin:0;
-font-family:Tajawal;
-background:#f4f6fb;
+‏<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+‏<style>
+‏body{
+‏margin:0;
+‏font-family:Tajawal;
+‏background:#f4f6fb;
 }
 
-/* LOGIN */
-.login{
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
+‏/* TOPBAR */
+‏.topbar{
+‏background:white;
+‏padding:15px;
+‏display:flex;
+‏justify-content:space-between;
+‏align-items:center;
+‏box-shadow:0 2px 10px rgba(0,0,0,0.05);
 }
 
-.login-box{
-background:white;
-padding:30px;
-border-radius:15px;
-width:300px;
-text-align:center;
+‏.login-box input{
+‏padding:6px;
+‏margin:0 5px;
+‏border-radius:6px;
+‏border:1px solid #ccc;
 }
 
-input{
-width:100%;
-padding:10px;
-margin:10px 0;
-border-radius:8px;
-border:1px solid #ddd;
+‏.login-box button{
+‏background:#6a11cb;
+‏color:white;
+‏border:none;
+‏padding:6px 10px;
+‏border-radius:6px;
+‏cursor:pointer;
 }
 
-button{
-background:#6a11cb;
-color:white;
-border:none;
-padding:10px;
-border-radius:8px;
-width:100%;
-cursor:pointer;
+‏/* SIDEBAR */
+‏.sidebar{
+‏width:230px;
+‏height:100vh;
+‏position:fixed;
+‏background:linear-gradient(#6a11cb,#2575fc);
+‏color:white;
+‏padding:20px;
 }
 
-/* DASHBOARD */
-.sidebar{
-width:230px;
-height:100vh;
-position:fixed;
-background:linear-gradient(#6a11cb,#2575fc);
-color:white;
-padding:20px;
+‏.logo{
+‏width:120px;
+‏display:block;
+‏margin:0 auto 20px;
 }
 
-.sidebar a{
-display:block;
-padding:12px;
-margin:10px 0;
-border-radius:10px;
-cursor:pointer;
+‏.sidebar a{
+‏display:block;
+‏padding:12px;
+‏margin:10px 0;
+‏border-radius:10px;
+‏cursor:pointer;
 }
 
-.sidebar a:hover{
-background:rgba(255,255,255,0.2);
+‏.sidebar a:hover{
+‏background:rgba(255,255,255,0.2);
 }
 
-.main{
-margin-right:250px;
-padding:20px;
+‏.main{
+‏margin-right:250px;
+‏padding:20px;
 }
 
-.cards{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:15px;
+‏.cards{
+‏display:grid;
+‏grid-template-columns:repeat(4,1fr);
+‏gap:15px;
 }
 
-.card{
-background:white;
-padding:20px;
-border-radius:12px;
+‏.card{
+‏background:white;
+‏padding:20px;
+‏border-radius:12px;
 }
 
-.chart{
-background:white;
-margin-top:20px;
-padding:20px;
-border-radius:12px;
+‏.chart{
+‏background:white;
+‏margin-top:20px;
+‏padding:20px;
+‏border-radius:12px;
 }
 
-.task-box{
-margin-top:20px;
+‏.task{
+‏background:white;
+‏padding:10px;
+‏margin:5px 0;
+‏border-radius:8px;
+}
+‏</style>
+‏</head>
+
+‏<body>
+
+‏<!-- TOPBAR -->
+‏<div class="topbar">
+‏<div id="welcome">👤 غير مسجل</div>
+
+‏<div class="login-box">
+‏<input id="user" placeholder="اسم المستخدم">
+‏<input id="pass" type="password" placeholder="كلمة المرور">
+‏<button onclick="login()">دخول</button>
+‏</div>
+‏</div>
+
+‏<!-- SIDEBAR -->
+‏<div class="sidebar">
+‏<img src="Logo1.jpg" class="logo">
+
+‏<a onclick="loadPage('teacher')">المعلمة</a>
+‏<a onclick="loadPage('student')">الطالب</a>
+‏<a onclick="loadPage('admin')">المدير</a>
+‏</div>
+
+‏<!-- MAIN -->
+‏<div class="main">
+‏<div id="content"></div>
+‏</div>
+
+‏<script>
+‏let logged=false;
+‏let currentUser="";
+‏let tasks=[];
+
+‏/* LOGIN */
+‏function login(){
+‏let u=document.getElementById("user").value;
+‏let p=document.getElementById("pass").value;
+
+‏if(u==="teacher" && p==="123"){
+‏logged=true;
+‏currentUser="المعلمة";
+‏loadPage('teacher');
+}
+‏else if(u==="student" && p==="123"){
+‏logged=true;
+‏currentUser="الطالب";
+‏loadPage('student');
+}
+‏else if(u==="admin" && p==="123"){
+‏logged=true;
+‏currentUser="المدير";
+‏loadPage('admin');
+}
+‏else{
+‏alert("بيانات غير صحيحة");
 }
 
-.task{
-background:white;
-padding:10px;
-border-radius:8px;
-margin:5px 0;
-}
-</style>
-</head>
-
-<body>
-
-<!-- LOGIN -->
-<div class="login" id="loginPage">
-<div class="login-box">
-<h2>تسجيل الدخول</h2>
-<input id="user" placeholder="اسم المستخدم">
-<input id="pass" type="password" placeholder="كلمة المرور">
-<button onclick="login()">دخول</button>
-</div>
-</div>
-
-<!-- DASHBOARD -->
-<div id="app" style="display:none;">
-
-<div class="sidebar">
-<h2>بصيرة</h2>
-<a onclick="loadPage('teacher')">المعلمة</a>
-<a onclick="loadPage('student')">الطالب</a>
-<a onclick="loadPage('admin')">المدير</a>
-</div>
-
-<div class="main">
-<div id="content"></div>
-</div>
-
-</div>
-
-<script>
-function login(){
-let u=document.getElementById("user").value;
-let p=document.getElementById("pass").value;
-
-if(u && p){
-document.getElementById("loginPage").style.display="none";
-document.getElementById("app").style.display="block";
-loadPage('teacher');
-}else{
-alert("ادخلي البيانات");
-}
+‏document.getElementById("welcome").innerText="مرحبًا "+currentUser;
 }
 
-/* PAGES */
+‏/* LOAD PAGES */
+‏function loadPage(page){
 
-let tasks=[];
+‏if(!logged){
+‏alert("سجلي دخول أول");
+‏return;
+}
 
-function loadPage(page){
+‏if(page==='teacher'){
+‏document.getElementById("content").innerHTML=`
+‏<h2>لوحة المعلمة</h2>
 
-if(page==='teacher'){
-document.getElementById("content").innerHTML=`
-<h2>لوحة المعلمة</h2>
+‏<div class="cards">
+‏<div class="card">طالبات<br><b>28</b></div>
+‏<div class="card">تنبيهات<br><b>7</b></div>
+‏<div class="card">مهام<br><b>${tasks.length}</b></div>
+‏<div class="card">نشاط<br><b>5</b></div>
+‏</div>
 
-<div class="cards">
-<div class="card">طالبات<br><b>28</b></div>
-<div class="card">تنبيهات<br><b>7</b></div>
-<div class="card">مهام<br><b>${tasks.length}</b></div>
-<div class="card">نشاط<br><b>5</b></div>
-</div>
+‏<div class="chart">
+‏<canvas id="chart1"></canvas>
+‏</div>
 
-<div class="chart">
-<canvas id="chart1"></canvas>
-</div>
+‏<div class="card">
+‏<h3>🤖 تحليل ذكي</h3>
+‏<input id="score" placeholder="ادخلي درجة الطالب">
+‏<button onclick="analyze()">تحليل</button>
+‏<p id="result"></p>
+‏</div>
 
-<div class="task-box">
-<h3>إضافة مهمة</h3>
-<input id="taskInput" placeholder="اكتبي المهمة">
-<button onclick="addTask()">إضافة</button>
+‏<h3>إضافة مهمة</h3>
+‏<input id="taskInput" placeholder="مهمة">
+‏<button onclick="addTask()">إضافة</button>
 
-<div id="taskList"></div>
-</div>
+‏<div id="taskList"></div>
 `;
 
-setTimeout(()=>{
-new Chart(document.getElementById("chart1"),{
-type:'doughnut',
-data:{
-labels:['ممتاز','جيد','متوسط','ضعيف'],
-datasets:[{data:[40,30,20,10]}]
+‏setTimeout(()=>{
+‏new Chart(document.getElementById("chart1"),{
+‏type:'doughnut',
+‏data:{
+‏labels:['ممتاز','جيد','متوسط','ضعيف'],
+‏datasets:[{data:[40,30,20,10]}]
 }
 });
 },100);
 
-renderTasks();
+‏renderTasks();
 }
 
-if(page==='student'){
-document.getElementById("content").innerHTML=`
-<h2>الطالب</h2>
+‏if(page==='student'){
+‏document.getElementById("content").innerHTML=`
+‏<h2>الطالب</h2>
 
-<div class="cards">
-<div class="card">التقدم<br><b>75%</b></div>
-<div class="card">الحضور<br><b>90%</b></div>
-<div class="card">المهام<br><b>${tasks.length}</b></div>
-<div class="card">التقييم<br><b>جيد</b></div>
-</div>
+‏<div class="cards">
+‏<div class="card">التقدم<br><b>75%</b></div>
+‏<div class="card">الحضور<br><b>90%</b></div>
+‏<div class="card">المهام<br><b>${tasks.length}</b></div>
+‏<div class="card">التقييم<br><b>جيد</b></div>
+‏</div>
 `;
 }
 
-if(page==='admin'){
-document.getElementById("content").innerHTML=`
-<h2>المدير</h2>
+‏if(page==='admin'){
+‏document.getElementById("content").innerHTML=`
+‏<h2>المدير</h2>
 
-<div class="cards">
-<div class="card">المعلمين<br><b>45</b></div>
-<div class="card">الطلاب<br><b>580</b></div>
-<div class="card">الفصول<br><b>38</b></div>
-<div class="card">تنبيهات<br><b>23</b></div>
-</div>
+‏<div class="cards">
+‏<div class="card">المعلمين<br><b>45</b></div>
+‏<div class="card">الطلاب<br><b>580</b></div>
+‏<div class="card">الفصول<br><b>38</b></div>
+‏<div class="card">تنبيهات<br><b>23</b></div>
+‏</div>
 
-<div class="chart">
-<canvas id="chart2"></canvas>
-</div>
+‏<div class="chart">
+‏<canvas id="chart2"></canvas>
+‏</div>
 `;
 
-setTimeout(()=>{
-new Chart(document.getElementById("chart2"),{
-type:'line',
-data:{
-labels:['سبتمبر','أكتوبر','نوفمبر','ديسمبر'],
-datasets:[{
-label:'الأداء',
-data:[50,70,60,90]
+‏setTimeout(()=>{
+‏new Chart(document.getElementById("chart2"),{
+‏type:'line',
+‏data:{
+‏labels:['سبتمبر','أكتوبر','نوفمبر','ديسمبر'],
+‏datasets:[{
+‏label:'الأداء',
+‏data:[50,70,60,90]
 }]
 }
 });
@@ -235,29 +254,42 @@ data:[50,70,60,90]
 }
 }
 
-/* TASK SYSTEM */
-
-function addTask(){
-let input=document.getElementById("taskInput");
-if(input.value){
-tasks.push(input.value);
-input.value="";
-renderTasks();
-loadPage('teacher');
+‏/* TASKS */
+‏function addTask(){
+‏let val=document.getElementById("taskInput").value;
+‏if(val){
+‏tasks.push(val);
+‏renderTasks();
+‏loadPage('teacher');
 }
 }
 
-function renderTasks(){
-let list=document.getElementById("taskList");
-if(!list) return;
+‏function renderTasks(){
+‏let list=document.getElementById("taskList");
+‏if(!list) return;
 
-list.
-innerHTML="";
-tasks.forEach(t=>{
-list.innerHTML+=`<div class="task">${t}</div>`;
+‏list.innerHTML="";
+‏tasks.forEach(t=>{
+‏list.innerHTML+=`<div class="task">${t}</div>`;
 });
 }
-</script>
 
-</body>
-</html>
+‏/* AI */
+‏function analyze(){
+‏let score=document.getElementById("score").value;
+‏let result=document.getElementById("result");
+
+‏if(score<50){
+‏result.innerText="⚠️ يحتاج تدخل فوري";
+}
+‏else if(score<75){
+‏result.innerText="📈 يحتاج تحسين";
+}
+‏else{
+‏result.innerText="🌟 ممتاز";
+}
+}
+‏</script>
+
+‏</body>
+‏</html>
