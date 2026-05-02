@@ -252,3 +252,12 @@ let list=document.getElementById("taskList");
 if(!list) return;
 
 list.
+innerHTML="";
+tasks.forEach(t=>{
+list.innerHTML+=`<div class="task">${t}</div>`;
+});
+}
+</script>
+
+</body>
+</html>
